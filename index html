@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gesture Guide — Panduan Gestur Tangan</title>
+<meta name="description" content="Panduan belajar gestur tangan dengan visual, makna, langkah gerakan, kategori, dan deteksi kamera." />
+<meta name="theme-color" content="#2B1D16" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --b900:#2B1D16;
+  --b800:#3A261D;
+  --b700:#5A3A2A;
+  --b600:#7A5238;
+  --b500:#A47755;
+  --b400:#C9A27E;
+  --b300:#E8D8C8;
+  --b100:#F5EFE8;
+  --b50:#FBF8F4;
+
+  --radius-sm:10px;
+  --radius:14px;
+  --radius-lg:20px;
+
+  --shadow-sm:0 1px 2px rgba(43,29,22,.06), 0 1px 3px rgba(43,29,22,.05);
+  --shadow-md:0 8px 28px rgba(43,29,22,.09);
+  --shadow-lg:0 20px 60px rgba(43,29,22,.18);
+
+  --max:1200px;
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-display:'Manrope','Inter',system-ui,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:84px;}
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  font-size:16px;
+  line-height:1.65;
+  color:var(--b800);
+  background:var(--b50);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg,video,canvas{display:block;max-width:100%;}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  color:var(--b900);
+  line-height:1.18;
+  letter-spacing:-.02em;
+  margin:0 0 .6rem;
+  font-weight:700;
+}
+h1{font-size:clamp(1.9rem,5.2vw,3.1rem);font-weight:800;}
+h2{font-size:clamp(1.45rem,3.6vw,2.15rem);font-weight:700;}
+h3{font-size:1.08rem;font-weight:700;}
+h4{font-size:.95rem;font-weight:700;}
+p{margin:0 0 1rem;}
+a{color:var(--b700);text-decoration:none;}
+a:hover{color:var(--b900);}
+button{font-family:inherit;}
+ul{margin:0;padding:0;list-style:none;}
+
+:focus-visible{outline:3px solid var(--b500);outline-offset:2px;border-radius:6px;}
+
+.skip-link{
+  position:absolute;left:-9999px;top:0;z-index:200;
+  background:var(--b900);color:var(--b50);
+  padding:12px 18px;border-radius:0 0 var(--radius-sm) 0;font-weight:600;
+}
+.skip-link:focus{left:0;}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+.container{width:100%;max-width:var(--max);margin:0 auto;padding:0 20px;}
+section{padding:64px 0;}
+@media(min-width:900px){ section{padding:84px 0;} }
+
+.section-head{text-align:left;max-width:680px;margin:0 0 36px;}
+.eyebrow{
+  display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--b500);margin-bottom:12px;
+}
+.section-head p{color:var(--b700);font-size:1.02rem;margin:0;}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:var(--radius-sm);font-size:.925rem;
+  font-weight:600;border:1px solid transparent;cursor:pointer;
+  transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+  text-align:center;line-height:1.2;
+}
+.btn:active{transform:translateY(1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-primary{background:var(--b900);color:var(--b50);border-color:var(--b900);}
+.btn-primary:hover:not(:disabled){background:var(--b700);border-color:var(--b700);color:#fff;}
+.btn-secondary{background:transparent;color:var(--b900);border-color:var(--b400);}
+.btn-secondary:hover:not(:disabled){background:var(--b100);border-color:var(--b600);color:var(--b900);}
+.btn-sm{padding:9px 16px;font-size:.85rem;}
+.btn-block{width:100%;}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar{position:sticky;top:0;z-index:60;background:var(--b900);border-bottom:1px solid rgba(232,216,200,.12);}
+.nav-inner{display:flex;align-items:center;gap:14px;min-height:68px;}
+.brand{
+  display:flex;align-items:center;gap:10px;color:var(--b50);
+  font-family:var(--font-display);font-weight:800;font-size:.98rem;
+  letter-spacing:.11em;white-space:nowrap;
+}
+.brand:hover{color:#fff;}
+.brand-mark{
+  width:30px;height:30px;flex:0 0 30px;border-radius:9px;
+  background:var(--b400);display:grid;place-items:center;
+  color:var(--b900);font-size:.78rem;font-weight:800;letter-spacing:0;
+}
+.nav-links{display:none;align-items:center;gap:2px;margin-left:auto;}
+.nav-links a{color:var(--b300);font-size:.885rem;font-weight:500;padding:9px 13px;border-radius:8px;transition:background-color .16s ease,color .16s ease;}
+.nav-links a:hover{background:rgba(232,216,200,.11);color:#fff;}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.nav-search{
+  display:none;background:var(--b400);color:var(--b900);border:1px solid var(--b400);
+  padding:9px 16px;border-radius:8px;font-size:.86rem;font-weight:600;cursor:pointer;
+}
+.nav-search:hover{background:var(--b300);}
+.menu-toggle{
+  display:inline-flex;align-items:center;gap:8px;background:transparent;
+  border:1px solid rgba(232,216,200,.28);color:var(--b100);border-radius:8px;
+  padding:9px 13px;font-size:.85rem;font-weight:600;cursor:pointer;
+}
+.menu-toggle:hover{background:rgba(232,216,200,.11);}
+.menu-icon{width:16px;height:12px;position:relative;display:block;}
+.menu-icon span{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease;}
+.menu-icon span:nth-child(1){top:0;}
+.menu-icon span:nth-child(2){top:5px;}
+.menu-icon span:nth-child(3){top:10px;}
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(1){transform:translateY(5px) rotate(45deg);}
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(2){opacity:0;}
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(3){transform:translateY(-5px) rotate(-45deg);}
+.mobile-menu{display:none;border-top:1px solid rgba(232,216,200,.14);background:var(--b800);padding:10px 0 18px;}
+.mobile-menu.open{display:block;}
+.mobile-menu a{display:block;color:var(--b300);padding:12px 4px;font-size:.95rem;font-weight:500;border-bottom:1px solid rgba(232,216,200,.09);}
+.mobile-menu a:last-of-type{border-bottom:0;}
+.mobile-menu a:hover{color:#fff;}
+.mobile-menu .btn{margin-top:14px;}
+@media(min-width:980px){
+  .nav-links{display:flex;}
+  .nav-search{display:inline-flex;}
+  .menu-toggle{display:none;}
+  .nav-actions{margin-left:8px;}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  padding:56px 0 56px;
+  background:radial-gradient(1100px 460px at 88% -10%, rgba(201,162,126,.24), transparent 62%),var(--b50);
+  border-bottom:1px solid var(--b300);
+}
+@media(min-width:900px){ .hero{padding:88px 0 84px;} }
+.hero-grid{display:grid;grid-template-columns:1fr;gap:44px;align-items:center;}
+@media(min-width:960px){ .hero-grid{grid-template-columns:1.08fr .92fr;gap:56px;} }
+.hero h1{max-width:16ch;margin-bottom:18px;}
+.hero-sub{color:var(--b700);font-size:1.06rem;max-width:56ch;margin-bottom:28px;}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px;}
+.hero-points{display:flex;flex-wrap:wrap;gap:10px 20px;}
+.hero-points li{display:flex;align-items:center;gap:8px;font-size:.87rem;font-weight:600;color:var(--b700);}
+.hero-points li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--b500);flex:0 0 7px;}
+.hero-visual{background:linear-gradient(165deg,#fff,var(--b100));border:1px solid var(--b300);border-radius:var(--radius-lg);padding:26px;box-shadow:var(--shadow-md);}
+.hero-visual svg{width:100%;height:auto;max-height:340px;margin:0 auto;}
+.hero-visual-caption{margin:14px 0 0;font-size:.78rem;color:var(--b600);text-align:left;line-height:1.5;}
+
+/* ============================================================
+   LEARNING PATH
+   ============================================================ */
+.path-list{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--b300);}
+.path-item{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--b300);}
+.path-num{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--b400);line-height:1;min-width:44px;}
+.path-item h3{margin-bottom:4px;}
+.path-item p{margin:0;color:var(--b700);font-size:.94rem;}
+@media(min-width:760px){
+  .path-list{grid-template-columns:repeat(5,1fr);border-top:0;gap:0;}
+  .path-item{grid-template-columns:1fr;gap:12px;border-bottom:0;border-top:2px solid var(--b300);padding:24px 22px 8px 0;}
+  .path-item:last-child{padding-right:0;}
+}
+
+/* ============================================================
+   TOOLBAR / FILTER
+   ============================================================ */
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.pill{
+  background:#fff;border:1px solid var(--b300);color:var(--b700);
+  padding:8px 16px;border-radius:999px;font-size:.85rem;font-weight:600;
+  cursor:pointer;transition:background-color .16s ease,color .16s ease,border-color .16s ease;white-space:nowrap;
+}
+.pill:hover{border-color:var(--b500);color:var(--b900);}
+.pill[aria-pressed="true"]{background:var(--b900);color:var(--b50);border-color:var(--b900);}
+.toolbar{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:28px;}
+@media(min-width:720px){ .toolbar{grid-template-columns:minmax(0,1.6fr) repeat(2,minmax(0,.8fr)) auto;align-items:center;} }
+.field-wrap{position:relative;}
+.field{
+  width:100%;background:#fff;border:1px solid var(--b300);border-radius:var(--radius-sm);
+  padding:12px 14px;font-family:inherit;font-size:.9rem;color:var(--b800);
+  transition:border-color .16s ease,box-shadow .16s ease;
+}
+.field::placeholder{color:var(--b500);}
+.field:hover{border-color:var(--b400);}
+.field:focus{border-color:var(--b600);box-shadow:0 0 0 3px rgba(164,119,85,.18);outline:none;}
+select.field{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237A5238' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:11px;padding-right:38px;}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.toggle-btn{
+  display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--b300);
+  color:var(--b700);padding:12px 16px;border-radius:var(--radius-sm);
+  font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;
+  transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+}
+.toggle-btn:hover{border-color:var(--b500);color:var(--b900);}
+.toggle-btn[aria-pressed="true"]{background:var(--b700);border-color:var(--b700);color:var(--b50);}
+.result-meta{font-size:.85rem;color:var(--b600);margin:0 0 20px;font-weight:500;}
+
+/* ============================================================
+   GESTURE GRID & CARD
+   ============================================================ */
+.grid{display:grid;grid-template-columns:1fr;gap:20px;}
+@media(min-width:600px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media(min-width:980px){ .grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
+@media(min-width:1180px){ .grid{grid-template-columns:repeat(4,minmax(0,1fr));} }
+
+.gesture-card{
+  position:relative;display:flex;flex-direction:column;background:#fff;
+  border:1px solid var(--b300);border-radius:var(--radius);padding:14px;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.gesture-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--b400);}
+.gesture-visual{
+  background:linear-gradient(165deg,var(--b100),var(--b50));border:1px solid var(--b300);
+  border-radius:var(--radius-sm);aspect-ratio:1/1;display:flex;align-items:center;
+  justify-content:center;padding:14px;margin-bottom:14px;overflow:hidden;
+}
+.gesture-visual svg{width:100%;height:100%;}
+.gesture-body{display:flex;flex-direction:column;flex:1;gap:6px;}
+.gesture-body h3{margin:0;}
+.gesture-body .meaning{font-size:.875rem;color:var(--b700);margin:0;flex:1;}
+.badge{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 10px;border-radius:999px;
+  border:1px solid var(--b300);background:var(--b100);color:var(--b700);align-self:flex-start;
+}
+.badge-diff{background:transparent;border-color:var(--b400);color:var(--b600);}
+.badge-diff[data-level="beginner"]{background:var(--b100);border-color:var(--b300);color:var(--b700);}
+.badge-diff[data-level="intermediate"]{background:var(--b300);border-color:var(--b400);color:var(--b800);}
+.badge-diff[data-level="advanced"]{background:var(--b700);border-color:var(--b700);color:var(--b50);}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;}
+.fav-btn{
+  position:absolute;top:22px;right:22px;width:38px;height:38px;display:grid;place-items:center;
+  background:rgba(251,248,244,.92);border:1px solid var(--b300);border-radius:50%;
+  color:var(--b600);font-size:1.05rem;line-height:1;cursor:pointer;
+  transition:background-color .16s ease,color .16s ease,border-color .16s ease,transform .16s ease;
+}
+.fav-btn:hover{background:#fff;border-color:var(--b500);color:var(--b900);transform:scale(1.06);}
+.fav-btn[aria-pressed="true"]{background:var(--b900);border-color:var(--b900);color:var(--b400);}
+
+.featured-band{background:var(--b100);border-top:1px solid var(--b300);border-bottom:1px solid var(--b300);}
+.scroll-row{display:grid;grid-template-columns:1fr;gap:18px;}
+@media(min-width:700px){ .scroll-row{grid-template-columns:repeat(3,minmax(0,1fr));} }
+
+/* ============================================================
+   PRACTICE MODE
+   ============================================================ */
+.practice-card{
+  display:grid;grid-template-columns:1fr;gap:28px;background:#fff;
+  border:1px solid var(--b300);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);
+}
+@media(min-width:860px){ .practice-card{grid-template-columns:340px minmax(0,1fr);padding:30px;gap:36px;} }
+.practice-visual{
+  background:linear-gradient(165deg,var(--b100),var(--b50));border:1px solid var(--b300);
+  border-radius:var(--radius);padding:22px;display:flex;align-items:center;justify-content:center;
+}
+.practice-visual svg{width:100%;height:auto;max-height:280px;}
+.practice-info h3{font-size:1.3rem;margin-bottom:6px;}
+.practice-step-label{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b500);margin-bottom:8px;}
+.practice-desc{color:var(--b700);font-size:.95rem;margin-bottom:20px;}
+.practice-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.step-track{display:flex;gap:6px;margin-bottom:18px;}
+.step-dot{height:4px;flex:1;border-radius:2px;background:var(--b300);transition:background-color .2s ease;}
+.step-dot.active{background:var(--b600);}
+
+/* ============================================================
+   CAMERA SECTION
+   ============================================================ */
+.camera-band{background:var(--b50);}
+.camera-card{
+  display:grid;grid-template-columns:1fr;gap:24px;
+  background:#fff;border:1px solid var(--b300);border-radius:var(--radius-lg);
+  padding:24px;box-shadow:var(--shadow-sm);
+}
+@media(min-width:900px){ .camera-card{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);padding:30px;gap:32px;} }
+
+.camera-stage{
+  position:relative;background:var(--b900);border-radius:var(--radius);
+  overflow:hidden;aspect-ratio:4/3;border:1px solid var(--b700);
+}
+.camera-stage video,
+.camera-stage canvas{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.camera-stage video{transform:scaleX(-1);}
+.camera-stage canvas{z-index:2;transform:scaleX(-1);}
+.camera-placeholder{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  background:var(--b900);color:var(--b300);z-index:3;padding:24px;
+}
+.camera-placeholder.hidden{display:none;}
+.camera-placeholder p{margin:0;font-size:.9rem;color:var(--b400);}
+.camera-placeholder strong{color:var(--b100);display:block;margin-bottom:6px;font-size:1rem;}
+
+.camera-controls{display:flex;flex-direction:column;gap:16px;}
+.camera-actions{display:flex;flex-direction:column;gap:10px;}
+@media(min-width:520px){ .camera-actions{flex-direction:row;} }
+.camera-toggle{
+  display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600;color:var(--b800);
+  background:var(--b100);border:1px solid var(--b300);border-radius:var(--radius-sm);
+  padding:12px 14px;cursor:pointer;
+}
+.camera-toggle input{accent-color:var(--b700);width:18px;height:18px;cursor:pointer;}
+
+.camera-status{
+  background:var(--b100);border:1px solid var(--b300);border-radius:var(--radius);
+  padding:18px;display:flex;flex-direction:column;gap:12px;
+}
+.status-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+.status-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--b500);}
+.status-value{font-size:.9rem;font-weight:600;color:var(--b800);text-align:right;}
+.detected-name{
+  font-family:var(--font-display);font-size:1.35rem;font-weight:800;color:var(--b900);
+  text-align:right;line-height:1.15;
+}
+.match-bar{
+  height:6px;border-radius:999px;background:var(--b300);overflow:hidden;margin-top:2px;
+}
+.match-fill{height:100%;border-radius:999px;background:var(--b700);width:0%;transition:width .2s ease;}
+.camera-note{font-size:.8rem;color:var(--b600);margin:0;line-height:1.55;}
+.camera-error{
+  background:#fff3ef;border:1px solid var(--b400);color:var(--b800);
+  padding:12px 14px;border-radius:var(--radius-sm);font-size:.85rem;
+}
+
+/* ============================================================
+   RECENT / PROGRESS
+   ============================================================ */
+.meta-grid{display:grid;grid-template-columns:1fr;gap:22px;}
+@media(min-width:900px){ .meta-grid{grid-template-columns:1.4fr 1fr;} }
+.panel{background:#fff;border:1px solid var(--b300);border-radius:var(--radius);padding:22px;}
+.recent-list{display:flex;flex-direction:column;gap:0;}
+.recent-item{
+  display:flex;align-items:center;gap:14px;padding:12px 0;
+  border-bottom:1px solid var(--b300);width:100%;background:none;
+  border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer;
+  color:inherit;font:inherit;
+}
+.recent-item:last-child{border-bottom:0;}
+.recent-item:hover .recent-name{color:var(--b600);text-decoration:underline;}
+.recent-thumb{
+  width:52px;height:52px;flex:0 0 52px;border-radius:10px;
+  background:var(--b100);border:1px solid var(--b300);display:grid;place-items:center;overflow:hidden;
+}
+.recent-thumb svg{width:100%;height:100%;}
+.recent-name{font-weight:600;font-size:.92rem;color:var(--b900);transition:color .16s ease;}
+.recent-cat{font-size:.78rem;color:var(--b600);}
+.progress-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.progress-num{font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--b900);line-height:1;}
+.progress-bar{height:8px;border-radius:999px;background:var(--b300);overflow:hidden;margin-bottom:12px;}
+.progress-fill{height:100%;border-radius:999px;background:var(--b700);width:0%;transition:width .4s ease;}
+.progress-note{font-size:.82rem;color:var(--b600);margin:0;}
+
+/* ============================================================
+   FEATURES / TIPS
+   ============================================================ */
+.feature-grid{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--b300);}
+@media(min-width:760px){ .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.feature{padding:26px 0;border-bottom:1px solid var(--b300);}
+@media(min-width:760px){
+  .feature{padding:30px 34px 30px 0;border-bottom:1px solid var(--b300);}
+  .feature:nth-child(odd){border-right:1px solid var(--b300);padding-right:34px;}
+  .feature:nth-child(even){padding-left:34px;}
+}
+.feature-icon{
+  width:38px;height:38px;border-radius:10px;background:var(--b100);border:1px solid var(--b300);
+  display:grid;place-items:center;color:var(--b600);margin-bottom:14px;
+  font-weight:800;font-size:.8rem;font-family:var(--font-display);
+}
+.feature h3{margin-bottom:6px;}
+.feature p{margin:0;color:var(--b700);font-size:.93rem;}
+
+.tips-list{display:grid;grid-template-columns:1fr;gap:0;}
+@media(min-width:760px){ .tips-list{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:44px;} }
+.tips-list li{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 0;
+  border-bottom:1px solid var(--b300);font-size:.94rem;color:var(--b700);
+}
+.tips-list li::before{content:"";width:8px;height:8px;margin-top:9px;border-radius:50%;background:var(--b400);}
+
+.note{
+  border-left:3px solid var(--b500);background:var(--b100);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:16px 20px;font-size:.9rem;color:var(--b700);margin:22px 0 0;text-align:left;
+}
+.note strong{color:var(--b900);}
+.note-tight{margin-top:14px;}
+
+.info-list{display:grid;gap:0;border-top:1px solid var(--b300);}
+.info-row{display:grid;grid-template-columns:1fr;gap:4px;padding:16px 0;border-bottom:1px solid var(--b300);}
+@media(min-width:640px){ .info-row{grid-template-columns:220px 1fr;gap:20px;align-items:baseline;} }
+.info-label{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--b500);}
+.info-value{font-size:.94rem;color:var(--b800);}
+.info-value.muted{color:var(--b600);font-style:italic;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:var(--b900);color:var(--b300);padding:56px 0 30px;margin-top:0;}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:34px;margin-bottom:38px;}
+@media(min-width:760px){ .footer-grid{grid-template-columns:1.3fr 1fr 1.2fr;gap:44px;} }
+.footer .brand{margin-bottom:14px;}
+.footer p{font-size:.88rem;color:var(--b400);margin:0 0 10px;max-width:44ch;}
+.footer h4{color:var(--b100);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;}
+.footer-links{display:flex;flex-direction:column;gap:9px;}
+.footer-links a{color:var(--b300);font-size:.89rem;}
+.footer-links a:hover{color:#fff;text-decoration:underline;}
+.footer-bottom{
+  border-top:1px solid rgba(232,216,200,.15);padding-top:22px;display:flex;
+  flex-wrap:wrap;gap:10px 22px;justify-content:space-between;align-items:center;
+  font-size:.8rem;color:var(--b500);
+}
+.footer-bottom p{margin:0;font-size:.8rem;color:var(--b500);}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal{
+  position:fixed;inset:0;z-index:120;display:none;align-items:flex-start;justify-content:center;
+  padding:0;background:rgba(43,29,22,.62);overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.modal.open{display:flex;}
+.modal-panel{
+  position:relative;background:var(--b50);width:100%;max-width:940px;min-height:100%;
+  margin:0 auto;padding:26px 20px 60px;animation:modalIn .22s ease;
+}
+@media(min-width:760px){
+  .modal{padding:40px 20px;align-items:flex-start;}
+  .modal-panel{min-height:0;border-radius:var(--radius-lg);padding:38px 40px 44px;box-shadow:var(--shadow-lg);}
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.modal-close{
+  position:sticky;top:0;float:right;margin:-10px -6px 0 16px;width:42px;height:42px;
+  display:grid;place-items:center;background:#fff;border:1px solid var(--b300);
+  border-radius:50%;color:var(--b700);font-size:1.1rem;cursor:pointer;z-index:2;
+  transition:background-color .16s ease,color .16s ease;
+}
+.modal-close:hover{background:var(--b900);color:var(--b50);border-color:var(--b900);}
+.modal-head{margin-bottom:26px;}
+.modal-head h2{margin-bottom:8px;}
+.modal-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.modal-meaning{color:var(--b700);font-size:1rem;max-width:66ch;margin:0;}
+.modal-layout{display:grid;grid-template-columns:1fr;gap:28px;margin-bottom:32px;}
+@media(min-width:800px){ .modal-layout{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start;} }
+.modal-visual{
+  background:linear-gradient(165deg,#fff,var(--b100));border:1px solid var(--b300);
+  border-radius:var(--radius);padding:22px;position:sticky;top:20px;
+}
+.modal-visual svg{width:100%;height:auto;max-height:320px;}
+.modal-visual figcaption{margin:12px 0 0;font-size:.78rem;color:var(--b600);line-height:1.5;text-align:left;}
+.block-title{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b500);margin:0 0 14px;}
+.steps{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--b300);}
+.step{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--b300);text-align:left;}
+.step-num{font-family:var(--font-display);font-size:1.05rem;font-weight:800;color:var(--b400);letter-spacing:.02em;line-height:1.4;}
+.step h4{margin-bottom:4px;font-size:.95rem;}
+.step p{margin:0;font-size:.9rem;color:var(--b700);}
+.modal-block{margin-bottom:28px;}
+.modal-block p{font-size:.94rem;color:var(--b700);margin:0;max-width:70ch;}
+.modal-actions{display:flex;flex-wrap:wrap;gap:10px;padding-top:8px;border-top:1px solid var(--b300);margin-top:8px;}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);z-index:200;
+  background:var(--b900);color:var(--b50);font-size:.875rem;font-weight:600;
+  padding:13px 22px;border-radius:999px;box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;transition:opacity .24s ease,transform .24s ease;
+  max-width:calc(100vw - 40px);text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+.empty{border:1px dashed var(--b400);border-radius:var(--radius);background:#fff;padding:48px 24px;text-align:left;max-width:520px;}
+.empty h3{margin-bottom:6px;}
+.empty p{margin:0;color:var(--b700);font-size:.92rem;}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a class="brand" href="#home" aria-label="Gesture Guide — beranda">
+        <span class="brand-mark" aria-hidden="true">GG</span>
+        <span id="brandName">GESTURE GUIDE</span>
+      </a>
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#home">Home</a>
+        <a href="#gestur">Gestur</a>
+        <a href="#kategori">Kategori</a>
+        <a href="#kamera">Kamera</a>
+        <a href="#belajar">Belajar</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
+      <div class="nav-actions">
+        <button type="button" class="nav-search" id="navSearchBtn">Cari Gestur</button>
+        <button type="button" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu">
+          <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+          Menu
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="container">
+      <a href="#home">Home</a>
+      <a href="#gestur">Gestur</a>
+      <a href="#kategori">Kategori</a>
+      <a href="#kamera">Kamera</a>
+      <a href="#belajar">Belajar</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#kontak">Kontak</a>
+      <button type="button" class="btn btn-primary btn-block" id="mobileSearchBtn">Cari Gestur</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Gesture Learning</span>
+          <h1>Pelajari Gestur Tangan untuk Komunikasi yang Lebih Mudah.</h1>
+          <p class="hero-sub">
+            Temukan panduan gestur tangan berdasarkan kategori, pahami maknanya,
+            ikuti langkah gerakannya, dan gunakan sebagai media belajar komunikasi
+            yang lebih inklusif.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#gestur">Mulai Belajar Gestur</a>
+            <a class="btn btn-secondary" href="#kamera">Coba Deteksi Kamera</a>
+          </div>
+          <ul class="hero-points">
+            <li>Mudah Dipelajari</li>
+            <li>Panduan Visual</li>
+            <li>Deteksi Kamera</li>
+          </ul>
+        </div>
+        <div class="hero-visual" id="heroVisual" aria-hidden="false"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LEARNING PATH
+       ============================================================ -->
+  <section id="belajar">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Alur Belajar</span>
+        <h2>Mulai dari Dasar</h2>
+        <p>Ikuti urutan belajar berikut agar materi gestur lebih mudah dipahami dan diingat.</p>
+      </div>
+      <div class="path-list">
+        <div class="path-item"><span class="path-num">01</span><div><h3>Kenali Posisi Tangan</h3><p>Perhatikan bentuk jari, telapak tangan, dan arah hadap tangan.</p></div></div>
+        <div class="path-item"><span class="path-num">02</span><div><h3>Pelajari Gerakan</h3><p>Ikuti arah dan perubahan posisi tangan langkah demi langkah.</p></div></div>
+        <div class="path-item"><span class="path-num">03</span><div><h3>Pahami Makna</h3><p>Pelajari arti gestur dan kaitannya dengan konteks percakapan.</p></div></div>
+        <div class="path-item"><span class="path-num">04</span><div><h3>Pelajari Konteks</h3><p>Ketahui kapan dan di mana gestur tersebut biasa digunakan.</p></div></div>
+        <div class="path-item"><span class="path-num">05</span><div><h3>Latih Secara Bertahap</h3><p>Ulangi gerakan perlahan dan tingkatkan materi secara konsisten.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CATALOG
+       ============================================================ -->
+  <section id="gestur">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Koleksi Gestur</span>
+        <h2>Koleksi Gestur</h2>
+        <p>Pelajari berbagai gestur berdasarkan makna dan penggunaannya dalam kehidupan sehari-hari.</p>
+      </div>
+
+      <div id="kategori" style="scroll-margin-top:90px;">
+        <h3 class="block-title" style="margin-bottom:12px;">Pelajari Berdasarkan Kategori</h3>
+        <div class="pill-row" id="categoryPills" role="group" aria-label="Filter kategori gestur"></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="field-wrap">
+          <label class="sr-only" for="searchInput">Cari gestur</label>
+          <input type="search" id="searchInput" class="field" placeholder="Cari gestur..." autocomplete="off" aria-describedby="resultMeta" />
+        </div>
+        <div class="field-wrap">
+          <label class="sr-only" for="sortSelect">Urutkan gestur</label>
+          <select id="sortSelect" class="field">
+            <option value="default">Urutkan: Default</option>
+            <option value="az">Urutkan: A–Z</option>
+            <option value="za">Urutkan: Z–A</option>
+            <option value="beginner">Tingkat: Pemula</option>
+            <option value="intermediate">Tingkat: Menengah</option>
+            <option value="advanced">Tingkat: Lanjutan</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="sr-only" for="difficultySelect">Filter tingkat kesulitan</label>
+          <select id="difficultySelect" class="field">
+            <option value="all">Semua Tingkat</option>
+            <option value="beginner">Pemula</option>
+            <option value="intermediate">Menengah</option>
+            <option value="advanced">Lanjutan</option>
+          </select>
+        </div>
+        <div class="toolbar-actions">
+          <button type="button" class="toggle-btn" id="favoriteToggle" aria-pressed="false">♡ Favorit</button>
+          <button type="button" class="toggle-btn" id="resetFilterBtn">Reset</button>
+        </div>
+      </div>
+
+      <p class="result-meta" id="resultMeta" role="status" aria-live="polite"></p>
+      <div class="grid" id="gestureGrid"></div>
+      <div id="gestureEmpty"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CAMERA DETECTION
+       ============================================================ -->
+  <section id="kamera" class="camera-band" style="background:var(--b100);border-top:1px solid var(--b300);border-bottom:1px solid var(--b300);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Deteksi Kamera</span>
+        <h2>Latihan dengan Kamera</h2>
+        <p>
+          Gunakan kamera untuk mendeteksi gestur tangan secara real-time.
+          Umpan balik suara akan berbunyi saat gestur dikenali.
+        </p>
+      </div>
+
+      <div class="camera-card">
+        <div class="camera-stage" id="cameraStage">
+          <video id="cameraVideo" playsinline muted autoplay></video>
+          <canvas id="cameraCanvas" width="640" height="480"></canvas>
+          <div class="camera-placeholder" id="cameraPlaceholder">
+            <div>
+              <strong>Kamera Belum Aktif</strong>
+              <p>Klik "Mulai Kamera" untuk memulai deteksi gestur tangan.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="camera-controls">
+          <div class="camera-actions">
+            <button type="button" class="btn btn-primary btn-block" id="startCameraBtn">Mulai Kamera</button>
+            <button type="button" class="btn btn-secondary btn-block" id="stopCameraBtn" disabled>Hentikan Kamera</button>
+          </div>
+
+          <label class="camera-toggle">
+            <input type="checkbox" id="soundToggle" checked />
+            <span>Suara Umpan Balik</span>
+          </label>
+
+          <div class="camera-status">
+            <div class="status-row">
+              <span class="status-label">Status</span>
+              <span class="status-value" id="cameraStatusText">Menunggu</span>
+            </div>
+            <div class="status-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+              <span class="status-label">Gestur Terdeteksi</span>
+              <span class="detected-name" id="detectedName">—</span>
+            </div>
+            <div>
+              <div class="status-row" style="margin-bottom:6px;">
+                <span class="status-label">Kecocokan</span>
+                <span class="status-value" id="matchScore">—</span>
+              </div>
+              <div class="match-bar"><div class="match-fill" id="matchFill"></div></div>
+            </div>
+          </div>
+
+          <p class="camera-note">
+            Deteksi gestur ini menggunakan analisis bentuk tangan secara sederhana.
+            Hasil deteksi dapat berbeda tergantung pencahayaan, posisi tangan, dan latar belakang.
+            Pastikan tangan terlihat jelas di depan kamera.
+          </p>
+
+          <div class="camera-error" id="cameraError" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURED
+       ============================================================ -->
+  <section class="featured-band" id="pilihan">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pilihan</span>
+        <h2>Gestur Pilihan</h2>
+        <p>Beberapa materi yang cocok dijadikan langkah awal untuk mulai belajar gestur tangan.</p>
+      </div>
+      <div class="scroll-row" id="featuredGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRACTICE MODE
+       ============================================================ -->
+  <section id="latihan">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Latihan</span>
+        <h2>Latihan Gestur</h2>
+        <p>Lihat contoh visual, ikuti langkahnya, lalu ulangi dengan tempo yang nyaman.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-visual" id="practiceVisual"></div>
+        <div class="practice-info">
+          <div class="step-track" id="practiceTrack" aria-hidden="true"></div>
+          <p class="practice-step-label" id="practiceStepLabel">Langkah 01</p>
+          <h3 id="practiceName">—</h3>
+          <p class="practice-desc" id="practiceDesc">—</p>
+          <div class="modal-actions" style="border-top:0;padding-top:0;margin-top:0;">
+            <button type="button" class="btn btn-primary btn-sm" id="practiceRepeat">Ulangi</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="practiceNextStep">Langkah Berikutnya</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="practiceNextGesture">Gestur Berikutnya</button>
+          </div>
+          <p class="progress-note" style="margin-top:18px;">
+            Mode latihan ini hanya menampilkan panduan visual. Tidak ada penilaian otomatis
+            terhadap gerakan tangan pengguna.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RECENT + PROGRESS
+       ============================================================ -->
+  <section id="riwayat">
+    <div class="container">
+      <div class="meta-grid">
+        <div class="panel">
+          <span class="eyebrow">Riwayat</span>
+          <h3 style="margin-bottom:14px;">Terakhir Dipelajari</h3>
+          <div id="recentContainer"></div>
+        </div>
+        <div class="panel">
+          <span class="eyebrow">Progres</span>
+          <h3 style="margin-bottom:14px;">Materi Dipelajari</h3>
+          <div class="progress-head"><span class="progress-num" id="progressCount">0 dari 0</span></div>
+          <div class="progress-bar" role="progressbar" id="progressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="progress-note" id="progressLabel">
+            Progres dihitung dari jumlah materi yang pernah kamu buka, bukan tingkat penguasaan
+            bahasa isyarat.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES
+       ============================================================ -->
+  <section id="keunggulan">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Keunggulan</span>
+        <h2>Kenapa Belajar di Sini?</h2>
+        <p>Disusun agar materi gestur mudah diikuti, terutama bagi pengguna yang baru mulai belajar.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature"><div class="feature-icon" aria-hidden="true">01</div><h3>Panduan Visual</h3><p>Setiap materi dilengkapi penjelasan visual yang mudah dipahami.</p></div>
+        <div class="feature"><div class="feature-icon" aria-hidden="true">02</div><h3>Materi Bertahap</h3><p>Pelajari gestur mulai dari dasar hingga materi yang lebih kompleks.</p></div>
+        <div class="feature"><div class="feature-icon" aria-hidden="true">03</div><h3>Deteksi Kamera</h3><p>Latih gestur dengan bantuan kamera dan umpan balik suara.</p></div>
+        <div class="feature"><div class="feature-icon" aria-hidden="true">04</div><h3>Materi Inklusif</h3><p>Gunakan bahasa yang menghormati pengguna dan komunitas Tuli.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TIPS
+       ============================================================ -->
+  <section id="tips" style="background:var(--b100);border-top:1px solid var(--b300);border-bottom:1px solid var(--b300);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Panduan</span>
+        <h2>Tips Belajar Gestur</h2>
+        <p>Beberapa kebiasaan sederhana yang membantu proses belajar gestur tangan.</p>
+      </div>
+      <ul class="tips-list">
+        <li>Pelajari satu gestur dalam satu waktu.</li>
+        <li>Perhatikan posisi tangan.</li>
+        <li>Perhatikan arah gerakan.</li>
+        <li>Ulangi gerakan secara perlahan.</li>
+        <li>Gunakan visual sebagai referensi.</li>
+        <li>Pelajari konteks penggunaannya.</li>
+        <li>Berlatih secara konsisten.</li>
+        <li>Jika memungkinkan, belajar bersama pengajar atau komunitas bahasa isyarat.</li>
+      </ul>
+      <p class="note">
+        <strong>Catatan:</strong> Belajar dari sumber komunitas dan pengajar yang kompeten sangat
+        dianjurkan untuk memperoleh pemahaman yang lebih akurat.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+       ============================================================ -->
+  <section id="tentang">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Tentang</span>
+        <h2>Tentang Gesture Guide</h2>
+      </div>
+      <p style="max-width:70ch;color:var(--b700);">
+        Gesture Guide adalah media pembelajaran yang membantu pengguna mengenal komunikasi
+        berbasis gestur dan bahasa isyarat. Materi disusun secara bertahap agar mudah diikuti
+        oleh pemula, mulai dari mengenali posisi tangan, memahami makna, hingga mempelajari
+        konteks penggunaannya.
+      </p>
+      <p style="max-width:70ch;color:var(--b700);">
+        Website ini bukan pengganti pengajar bahasa isyarat dan bukan standar universal.
+        Bahasa isyarat memiliki variasi berdasarkan negara dan komunitas, sehingga materi
+        di sini sebaiknya digunakan sebagai pendamping belajar, bukan satu-satunya sumber.
+      </p>
+      <p class="note">
+        <strong>Catatan edukatif:</strong> Materi di website ini merupakan panduan pembelajaran.
+        Bahasa isyarat memiliki variasi berdasarkan negara dan komunitas. Untuk mempelajari
+        bahasa isyarat secara lebih mendalam dan akurat, gunakan sumber resmi serta belajar
+        bersama pengajar atau komunitas yang kompeten.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SIGN SYSTEM
+       ============================================================ -->
+  <section id="bahasa" style="background:var(--b100);border-top:1px solid var(--b300);border-bottom:1px solid var(--b300);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Referensi</span>
+        <h2>Bahasa Isyarat yang Digunakan</h2>
+        <p>Bagian ini menjelaskan sistem atau referensi yang digunakan oleh materi di website.</p>
+      </div>
+      <div class="info-list" id="signSystemList"></div>
+      <p class="note">
+        <strong>Penting:</strong> Pastikan materi sesuai dengan bahasa isyarat yang digunakan
+        oleh komunitas setempat.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOURCE
+       ============================================================ -->
+  <section id="sumber">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Sumber</span>
+        <h2>Sumber Pembelajaran</h2>
+        <p>Transparansi mengenai asal materi yang digunakan pada website ini.</p>
+      </div>
+      <div class="info-list" id="sourceList"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+       ============================================================ -->
+  <section id="kontak" style="background:var(--b100);border-top:1px solid var(--b300);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Kontak</span>
+        <h2>Butuh Bantuan?</h2>
+        <p>Jika memiliki pertanyaan mengenai materi pembelajaran atau ingin memberikan masukan, silakan hubungi pengelola website.</p>
+      </div>
+      <div class="info-list" id="contactList"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#home" aria-label="Gesture Guide — beranda">
+          <span class="brand-mark" aria-hidden="true">GG</span>
+          <span id="footerBrandName">GESTURE GUIDE</span>
+        </a>
+        <p id="footerTagline">Belajar Gestur Tangan dengan Mudah</p>
+        <p>
+          Bahasa isyarat memiliki variasi berdasarkan negara dan komunitas. Gunakan materi ini
+          sebagai panduan belajar dan sesuaikan dengan bahasa isyarat yang digunakan di lingkunganmu.
+        </p>
+      </div>
+      <div>
+        <h4>Navigasi</h4>
+        <nav class="footer-links" aria-label="Navigasi footer">
+          <a href="#home">Home</a>
+          <a href="#gestur">Gestur</a>
+          <a href="#kategori">Kategori</a>
+          <a href="#kamera">Kamera</a>
+          <a href="#belajar">Belajar</a>
+          <a href="#tentang">Tentang</a>
+          <a href="#kontak">Kontak</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Catatan</h4>
+        <p id="footerNote">Materi pada website ini merupakan panduan pembelajaran dan bukan standar universal.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="footerCopyright">© 2026 GESTURE GUIDE</p>
+      <p id="footerText">Belajar komunikasi yang lebih inklusif, satu gestur dalam satu waktu.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     MODAL
+     ============================================================ -->
+<div class="modal" id="gestureModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-panel" id="modalPanel">
+    <button type="button" class="modal-close" id="modalClose" aria-label="Tutup detail gestur">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============================================================
+     MEDIAPIPE SCRIPTS
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+<script>
+"use strict";
+
+/* ============================================================
+   1. WEBSITE CONFIG
+   ============================================================ */
+const siteConfig = {
+  brandName: "GESTURE GUIDE",
+  tagline: "Belajar Gestur Tangan dengan Mudah",
+  languageSystem: "Materi Contoh (Ilustratif)",
+  description: "Panduan belajar gestur tangan dengan visual, makna, langkah gerakan, kategori, dan deteksi kamera.",
+  contact: { email: "", community: "", reference: "" },
+  sourceNote: "Seluruh materi gestur pada website ini masih berupa data contoh (dummy) untuk keperluan demonstrasi antarmuka.",
+  footerText: "Belajar komunikasi yang lebih inklusif, satu gestur dalam satu waktu."
+};
+
+/* ============================================================
+   2. CATEGORY DATA
+   ============================================================ */
+const CATEGORIES = ["Semua","Sapaan","Respons","Kebutuhan Sehari-hari","Ekspresi","Keluarga","Sekolah","Aktivitas","Waktu","Angka"];
+
+/* ============================================================
+   3. GESTURE DATA
+   ============================================================ */
+const GESTURES = [
+  { id:"gs-01", name:"Salam", slug:"salam", category:"Sapaan", meaning:"Sapaan pembuka atau salam.", description:"Gestur ini menggambarkan telapak tangan terbuka yang diangkat sejajar bahu. Digunakan sebagai bentuk sapaan ramah saat bertemu seseorang.", pose:{f1:1,f2:1,f3:1,f4:1,t:1,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan hingga sejajar dengan bahu. Telapak tangan menghadap ke depan dan jari-jari terbuka dengan rileks.",pose:{f1:1,f2:1,f3:1,f4:1,t:1,rot:-6}},
+      {number:2,title:"Gerakan",description:"Gerakkan tangan sedikit ke depan dan ke atas dengan lembut, tanpa mengubah bentuk jari.",pose:{f1:1,f2:1,f3:1,f4:1,t:1,rot:-16}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi sejenak sambil menjaga kontak mata, lalu turunkan tangan secara perlahan.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.9,rot:-4}}
+    ], usage:"Digunakan saat menyapa seseorang pada jarak yang masih terlihat dengan jelas.", notes:"Bentuk sapaan dapat berbeda pada setiap komunitas bahasa isyarat. Sesuaikan dengan kebiasaan setempat.", keywords:["salam","hai","halo","sapa","hello"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-02", name:"Terima Kasih", slug:"terima-kasih", category:"Sapaan", meaning:"Ungkapan untuk menyampaikan rasa terima kasih.", description:"Gerakan dilakukan dengan mengarahkan ujung jari dari area dagu ke arah depan, menggambarkan pemberian rasa terima kasih.", pose:{f1:1,f2:1,f3:1,f4:1,t:0.25,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Letakkan ujung jari tangan di dekat dagu dengan jari-jari rapat dan telapak menghadap ke dalam.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.25,rot:8}},
+      {number:2,title:"Gerakan",description:"Gerakkan tangan ke arah depan dan sedikit ke bawah secara perlahan, menjaga jari tetap rapat.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.3,rot:-8}},
+      {number:3,title:"Posisi Akhir",description:"Buka telapak tangan sedikit menghadap ke atas sebagai penutup gerakan, lalu turunkan tangan.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.6,rot:-18}}
+    ], usage:"Digunakan setelah menerima bantuan, pemberian, atau kebaikan dari orang lain.", notes:"Ekspresi wajah yang ramah membantu menyampaikan maksud gestur ini.", keywords:["terima kasih","makasih","thanks","syukur"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-03", name:"Tolong", slug:"tolong", category:"Kebutuhan Sehari-hari", meaning:"Meminta bantuan kepada orang lain.", description:"Gestur ini menggambarkan telapak tangan terbuka yang diarahkan ke depan, seolah menawarkan atau meminta bantuan.", pose:{f1:1,f2:1,f3:1,f4:1,t:0.7,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan setinggi dada dengan telapak menghadap ke atas dan jari-jari sedikit terbuka.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.8,rot:12}},
+      {number:2,title:"Gerakan",description:"Dorong tangan perlahan ke arah depan, seolah menyampaikan permintaan kepada lawan bicara.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.7,rot:-10}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi tangan di depan dada sejenak, lalu kembali ke posisi awal.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.6,rot:0}}
+    ], usage:"Digunakan ketika membutuhkan pertolongan, misalnya meminta bantuan mengambil barang.", notes:"Sertakan ekspresi wajah yang sesuai agar maksud permintaan tidak terkesan memaksa.", keywords:["tolong","bantu","help","permintaan"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-04", name:"Maaf", slug:"maaf", category:"Ekspresi", meaning:"Mengungkapkan permintaan maaf.", description:"Gerakan menggambarkan tangan yang menggenggam dan diletakkan di area dada, menandakan penyesalan yang tulus.", pose:{f1:0,f2:0,f3:0,f4:0,t:0.3,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Genggam tangan dengan rileks, lalu letakkan di depan dada bagian tengah.",pose:{f1:0,f2:0,f3:0,f4:0,t:0.35,rot:6}},
+      {number:2,title:"Gerakan",description:"Gerakkan genggaman tangan memutar kecil di area dada secara perlahan.",pose:{f1:0.15,f2:0,f3:0,f4:0,t:0.3,rot:-6}},
+      {number:3,title:"Posisi Akhir",description:"Hentikan gerakan dan tahan posisi tangan di dada sambil menatap lawan bicara.",pose:{f1:0,f2:0,f3:0,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan saat ingin meminta maaf atas kesalahan atau ketidaksengajaan.", notes:"Sampaikan dengan ekspresi wajah yang mendukung agar pesan terasa tulus.", keywords:["maaf","sorry","minta maaf","penyesalan"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-05", name:"Ya", slug:"ya", category:"Respons", meaning:"Persetujuan atau jawaban ya.", description:"Gestur ini menggunakan tangan yang menggenggam dan digerakkan naik turun, menyerupai anggukan kepala.", pose:{f1:0,f2:0,f3:0,f4:0,t:0.2,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Genggam tangan dengan rileks dan angkat hingga setinggi dada.",pose:{f1:0,f2:0,f3:0,f4:0,t:0.2,rot:-8}},
+      {number:2,title:"Gerakan",description:"Gerakkan genggaman tangan ke atas dan ke bawah seperti gerakan mengangguk.",pose:{f1:0,f2:0,f3:0,f4:0,t:0.2,rot:10}},
+      {number:3,title:"Posisi Akhir",description:"Kembalikan tangan ke posisi tengah dan tahan sejenak sebagai penegasan.",pose:{f1:0,f2:0,f3:0,f4:0,t:0.2,rot:0}}
+    ], usage:"Digunakan untuk menyatakan setuju atau menjawab pertanyaan dengan ya.", notes:"Ulangi gerakan dua sampai tiga kali agar maksudnya lebih jelas.", keywords:["ya","iya","setuju","yes"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-06", name:"Tidak", slug:"tidak", category:"Respons", meaning:"Penolakan atau jawaban tidak.", description:"Gestur ini menggunakan telunjuk yang digerakkan ke kiri dan ke kanan, menyerupai gerakan menggeleng.", pose:{f1:1,f2:0,f3:0,f4:0,t:0.4,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan telunjuk berdiri dan jari lain menggenggam, telapak menghadap ke depan.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.4,rot:-6}},
+      {number:2,title:"Gerakan",description:"Gerakkan telunjuk ke kiri dan ke kanan secara perlahan sebanyak dua kali.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.4,rot:10}},
+      {number:3,title:"Posisi Akhir",description:"Kembalikan telunjuk ke posisi tengah dan turunkan tangan secara perlahan.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.35,rot:0}}
+    ], usage:"Digunakan untuk menolak tawaran atau menjawab pertanyaan dengan tidak.", notes:"Hindari gerakan yang terlalu cepat agar pesan tetap jelas dan tidak terkesan kasar.", keywords:["tidak","bukan","no","tolak"], difficulty:"beginner", featured:true, status:"dummy" },
+  { id:"gs-07", name:"Ibu", slug:"ibu", category:"Keluarga", meaning:"Sebutan untuk ibu.", description:"Gerakan dilakukan di area dekat dagu dengan posisi jari terbuka, menandakan sosok ibu dalam keluarga.", pose:{f1:1,f2:1,f3:1,f4:1,t:1,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan hingga dekat area dagu dengan jari-jari terbuka dan telapak menghadap ke dalam.",pose:{f1:1,f2:1,f3:1,f4:1,t:1,rot:6}},
+      {number:2,title:"Gerakan",description:"Sentuhkan ujung jari ke area dagu dengan lembut, tanpa menekan.",pose:{f1:1,f2:1,f3:1,f4:0.6,t:1,rot:-4}},
+      {number:3,title:"Posisi Akhir",description:"Turunkan tangan perlahan ke posisi awal sambil menjaga ekspresi wajah yang ramah.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.9,rot:0}}
+    ], usage:"Digunakan ketika menyebut atau membicarakan ibu dalam sebuah percakapan.", notes:"Bentuk gestur untuk anggota keluarga dapat berbeda pada setiap komunitas bahasa isyarat.", keywords:["ibu","mama","bunda","keluarga"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-08", name:"Ayah", slug:"ayah", category:"Keluarga", meaning:"Sebutan untuk ayah.", description:"Gerakan dilakukan di area dahi dengan posisi jari terbuka, menandakan sosok ayah dalam keluarga.", pose:{f1:1,f2:1,f3:1,f4:0,t:0.3,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan hingga dekat area dahi dengan jari-jari terbuka dan telapak menghadap ke dalam.",pose:{f1:1,f2:1,f3:1,f4:0,t:0.3,rot:8}},
+      {number:2,title:"Gerakan",description:"Sentuhkan ujung jari ke area dahi dengan lembut dan tahan sebentar.",pose:{f1:1,f2:1,f3:1,f4:0,t:0.35,rot:-6}},
+      {number:3,title:"Posisi Akhir",description:"Turunkan tangan secara perlahan sambil mempertahankan kontak mata.",pose:{f1:1,f2:1,f3:1,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan ketika menyebut atau membicarakan ayah dalam sebuah percakapan.", notes:"Perhatikan perbedaan area sentuh antara gestur ibu dan ayah.", keywords:["ayah","papa","bapak","keluarga"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-09", name:"Sekolah", slug:"sekolah", category:"Sekolah", meaning:"Tempat belajar atau sekolah.", description:"Gerakan menggambarkan dua ketukan tangan yang menandakan kegiatan belajar di sekolah.", pose:{f1:1,f2:1,f3:1,f4:1,t:0.5,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan setinggi dada dengan jari-jari rapat menghadap ke bawah.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.5,rot:0}},
+      {number:2,title:"Gerakan",description:"Ketukkan tangan dua kali ke arah depan dengan gerakan ringan dan berirama.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.4,rot:-12}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi tangan setelah ketukan terakhir, lalu turunkan secara perlahan.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.45,rot:-2}}
+    ], usage:"Digunakan saat membicarakan kegiatan sekolah atau tempat belajar.", notes:"Jaga gerakan tetap ringan dan tidak terlalu kuat.", keywords:["sekolah","belajar","kelas","school"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-10", name:"Belajar", slug:"belajar", category:"Sekolah", meaning:"Kegiatan mempelajari sesuatu.", description:"Gerakan menggambarkan tangan yang membuka dan menutup, menyerupai proses menyerap pengetahuan.", pose:{f1:1,f2:1,f3:1,f4:1,t:0.6,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Buka telapak tangan menghadap ke atas dengan jari-jari terbuka di depan dada.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.7,rot:8}},
+      {number:2,title:"Gerakan",description:"Tutup jari-jari secara perlahan hingga membentuk setengah genggaman.",pose:{f1:0.5,f2:0.5,f3:0.5,f4:0.5,t:0.5,rot:-4}},
+      {number:3,title:"Posisi Akhir",description:"Kembalikan tangan ke posisi terbuka sebagai penutup gerakan.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.6,rot:0}}
+    ], usage:"Digunakan saat membicarakan kegiatan belajar atau proses memahami sesuatu.", notes:"Lakukan gerakan secara perlahan agar perubahan posisi jari terlihat jelas.", keywords:["belajar","studi","study","pelajaran"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-11", name:"Makan", slug:"makan", category:"Aktivitas", meaning:"Kegiatan makan.", description:"Gerakan menggambarkan jari-jari yang dirapatkan dan diarahkan ke arah mulut, menyerupai gerakan menyuap.", pose:{f1:0.4,f2:0.4,f3:0.4,f4:0.4,t:0.5,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Rapatkan ujung jari-jari tangan dan angkat hingga setinggi dada.",pose:{f1:0.45,f2:0.45,f3:0.45,f4:0.45,t:0.5,rot:6}},
+      {number:2,title:"Gerakan",description:"Gerakkan ujung jari ke arah mulut secara perlahan, seperti gerakan menyuap.",pose:{f1:0.35,f2:0.35,f3:0.35,f4:0.35,t:0.5,rot:-8}},
+      {number:3,title:"Posisi Akhir",description:"Dekatkan ujung jari ke area mulut, tahan sejenak, lalu turunkan tangan.",pose:{f1:0.3,f2:0.3,f3:0.3,f4:0.3,t:0.45,rot:-2}}
+    ], usage:"Digunakan saat membicarakan waktu makan atau mengajak seseorang makan.", notes:"Gerakan ini dapat disertai ekspresi wajah yang menunjukkan kegiatan makan.", keywords:["makan","eat","lapar","aktivitas"], difficulty:"beginner", featured:false, status:"dummy" },
+  { id:"gs-12", name:"Minum", slug:"minum", category:"Aktivitas", meaning:"Kegiatan minum.", description:"Gerakan menggambarkan tangan yang menggenggam seperti memegang gelas lalu diangkat ke arah mulut.", pose:{f1:0.35,f2:0.35,f3:0.35,f4:0.35,t:0.85,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Bentuk tangan seperti menggenggam gelas dengan posisi setinggi dada.",pose:{f1:0.35,f2:0.35,f3:0.35,f4:0.35,t:0.85,rot:4}},
+      {number:2,title:"Gerakan",description:"Angkat tangan secara perlahan ke arah mulut, seolah sedang meminum sesuatu.",pose:{f1:0.3,f2:0.3,f3:0.3,f4:0.3,t:0.8,rot:-10}},
+      {number:3,title:"Posisi Akhir",description:"Tahan sebentar di dekat mulut, lalu turunkan tangan kembali ke posisi awal.",pose:{f1:0.35,f2:0.35,f3:0.35,f4:0.35,t:0.8,rot:0}}
+    ], usage:"Digunakan saat membicarakan kegiatan minum atau menawarkan minuman.", notes:"Jaga bentuk genggaman tetap konsisten selama gerakan berlangsung.", keywords:["minum","drink","haus","aktivitas"], difficulty:"beginner", featured:false, status:"dummy" },
+  { id:"gs-13", name:"Sekarang", slug:"sekarang", category:"Waktu", meaning:"Menunjuk waktu saat ini.", description:"Gerakan menggunakan telunjuk yang diarahkan ke bawah di depan tubuh, menandakan waktu saat ini.", pose:{f1:1,f2:0,f3:0,f4:0,t:0.35,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan telunjuk berdiri dan jari lain menggenggam.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.35,rot:-4}},
+      {number:2,title:"Gerakan",description:"Arahkan telunjuk ke bawah dan gerakkan sedikit ke depan secara tegas.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.35,rot:12}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi telunjuk mengarah ke bawah sejenak, lalu turunkan tangan.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.3,rot:2}}
+    ], usage:"Digunakan untuk menekankan bahwa sesuatu terjadi pada waktu sekarang.", notes:"Gerakan yang tegas membantu menegaskan makna waktu saat ini.", keywords:["sekarang","now","waktu","saat ini"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-14", name:"Satu", slug:"satu", category:"Angka", meaning:"Angka satu.", description:"Gestur angka satu ditunjukkan dengan telunjuk yang berdiri tegak dan jari lain menggenggam.", pose:{f1:1,f2:0,f3:0,f4:0,t:0.3,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan hingga setinggi dada dengan jari-jari menggenggam.",pose:{f1:0.2,f2:0,f3:0,f4:0,t:0.3,rot:0}},
+      {number:2,title:"Gerakan",description:"Tegakkan telunjuk ke atas dengan mantap, jari lain tetap menggenggam.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.3,rot:-2}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi telunjuk tegak sejenak sebagai penegasan angka satu.",pose:{f1:1,f2:0,f3:0,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan saat menyebut jumlah satu atau urutan pertama.", notes:"Jaga posisi telunjuk tetap tegak dan stabil.", keywords:["satu","one","angka","jumlah"], difficulty:"beginner", featured:false, status:"dummy" },
+  { id:"gs-15", name:"Dua", slug:"dua", category:"Angka", meaning:"Angka dua.", description:"Gestur angka dua ditunjukkan dengan telunjuk dan jari tengah yang berdiri, jari lain menggenggam.", pose:{f1:1,f2:1,f3:0,f4:0,t:0.35,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan jari-jari menggenggam, lalu siapkan telunjuk dan jari tengah.",pose:{f1:0.4,f2:0.4,f3:0,f4:0,t:0.35,rot:0}},
+      {number:2,title:"Gerakan",description:"Tegakkan telunjuk dan jari tengah bersamaan, jari lain tetap menggenggam.",pose:{f1:1,f2:1,f3:0,f4:0,t:0.35,rot:-2}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi dua jari tegak sejenak, lalu turunkan tangan perlahan.",pose:{f1:1,f2:1,f3:0,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan saat menyebut jumlah dua atau urutan kedua.", notes:"Pastikan kedua jari berdiri sejajar agar bentuknya mudah dikenali.", keywords:["dua","two","angka","jumlah"], difficulty:"beginner", featured:false, status:"dummy" },
+  { id:"gs-16", name:"Selesai", slug:"selesai", category:"Respons", meaning:"Menyatakan bahwa sesuatu telah selesai.", description:"Gerakan menggambarkan tangan terbuka yang menutup dengan cepat, menandakan sesuatu sudah berakhir.", pose:{f1:1,f2:1,f3:1,f4:1,t:0.6,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan telapak terbuka menghadap ke depan setinggi dada.",pose:{f1:1,f2:1,f3:1,f4:1,t:0.7,rot:-6}},
+      {number:2,title:"Gerakan",description:"Tutup jari-jari dengan cepat hingga membentuk genggaman ringan.",pose:{f1:0.25,f2:0.25,f3:0.25,f4:0.25,t:0.4,rot:-2}},
+      {number:3,title:"Posisi Akhir",description:"Tahan genggaman sejenak sebagai penegasan, lalu turunkan tangan.",pose:{f1:0.1,f2:0.1,f3:0.1,f4:0.1,t:0.3,rot:0}}
+    ], usage:"Digunakan untuk menandakan bahwa sebuah kegiatan atau percakapan telah selesai.", notes:"Gerakan penutup yang tegas membantu memperjelas maksud.", keywords:["selesai","habis","finish","berakhir"], difficulty:"advanced", featured:false, status:"dummy" },
+  { id:"gs-17", name:"Sakit", slug:"sakit", category:"Ekspresi", meaning:"Mengungkapkan rasa sakit atau tidak nyaman.", description:"Gerakan menggunakan dua jari yang saling mendekat di area tubuh yang terasa sakit.", pose:{f1:1,f2:0.6,f3:0,f4:0,t:0.3,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan telunjuk dan jari tengah setengah terbuka, menghadap area tubuh.",pose:{f1:1,f2:0.7,f3:0,f4:0,t:0.3,rot:4}},
+      {number:2,title:"Gerakan",description:"Dekatkan kedua ujung jari ke arah bagian tubuh yang terasa sakit secara perlahan.",pose:{f1:1,f2:0.5,f3:0,f4:0,t:0.3,rot:-8}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi jari sejenak, lalu turunkan tangan dengan lembut.",pose:{f1:1,f2:0.6,f3:0,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan ketika ingin memberi tahu bahwa sedang merasakan sakit.", notes:"Sertakan ekspresi wajah yang sesuai agar maksud lebih mudah dipahami.", keywords:["sakit","nyeri","hurt","keluhan"], difficulty:"intermediate", featured:false, status:"dummy" },
+  { id:"gs-18", name:"Teman", slug:"teman", category:"Keluarga", meaning:"Sebutan untuk teman atau sahabat.", description:"Gerakan menggunakan dua jari yang saling mengait, menggambarkan hubungan yang dekat.", pose:{f1:1,f2:0.5,f3:0,f4:0,t:0.3,rot:0},
+    steps:[
+      {number:1,title:"Posisi Awal",description:"Angkat tangan dengan telunjuk dan jari tengah setengah terbuka di depan dada.",pose:{f1:1,f2:0.5,f3:0,f4:0,t:0.3,rot:6}},
+      {number:2,title:"Gerakan",description:"Kaitkan kedua jari satu sama lain dengan gerakan kecil dan lembut.",pose:{f1:0.9,f2:0.6,f3:0,f4:0,t:0.3,rot:-6}},
+      {number:3,title:"Posisi Akhir",description:"Tahan posisi jari yang saling mengait sejenak sebagai lambang kedekatan.",pose:{f1:1,f2:0.5,f3:0,f4:0,t:0.3,rot:0}}
+    ], usage:"Digunakan saat memperkenalkan atau membicarakan seorang teman.", notes:"Gerakan dilakukan dengan lembut agar tidak terkesan berlebihan.", keywords:["teman","sahabat","friend","kawan"], difficulty:"intermediate", featured:false, status:"dummy" }
+];
+
+/* ============================================================
+   4. GESTURE DETECTION PATTERNS (for camera)
+   ------------------------------------------------------------
+   Setiap gestur dipetakan ke pola jari [thumb, index, middle,
+   ring, pinky] dengan 1 = terbuka, 0 = tertutup.
+   ============================================================ */
+const GESTURE_DETECTION = {
+  "gs-01": { fingers:[1,1,1,1,1], label:"Salam",          sound:523.25, priority:1 },
+  "gs-02": { fingers:[1,1,1,1,1], label:"Terima Kasih",   sound:587.33, priority:2 },
+  "gs-03": { fingers:[1,1,1,1,1], label:"Tolong",         sound:659.25, priority:3 },
+  "gs-04": { fingers:[0,0,0,0,0], label:"Maaf",           sound:440.00, priority:1 },
+  "gs-05": { fingers:[0,0,0,0,0], label:"Ya",             sound:493.88, priority:2 },
+  "gs-06": { fingers:[0,1,0,0,0], label:"Tidak",          sound:349.23, priority:1 },
+  "gs-07": { fingers:[1,1,1,1,1], label:"Ibu",            sound:392.00, priority:4 },
+  "gs-08": { fingers:[1,1,1,1,1], label:"Ayah",           sound:329.63, priority:5 },
+  "gs-09": { fingers:[1,1,1,1,1], label:"Sekolah",        sound:293.66, priority:6 },
+  "gs-10": { fingers:[1,1,1,1,1], label:"Belajar",        sound:261.63, priority:7 },
+  "gs-11": { fingers:[0,0,0,0,0], label:"Makan",          sound:392.00, priority:3 },
+  "gs-12": { fingers:[0,0,0,0,0], label:"Minum",          sound:440.00, priority:4 },
+  "gs-13": { fingers:[0,1,0,0,0], label:"Sekarang",       sound:523.25, priority:2 },
+  "gs-14": { fingers:[0,1,0,0,0], label:"Satu",           sound:587.33, priority:3 },
+  "gs-15": { fingers:[0,1,1,0,0], label:"Dua",            sound:659.25, priority:1 },
+  "gs-16": { fingers:[0,0,0,0,0], label:"Selesai",        sound:349.23, priority:5 },
+  "gs-17": { fingers:[0,1,0,0,0], label:"Sakit",          sound:293.66, priority:4 },
+  "gs-18": { fingers:[0,1,1,0,0], label:"Teman",          sound:261.63, priority:2 }
+};
+
+/* ============================================================
+   5. LOCAL STORAGE
+   ============================================================ */
+const STORAGE_KEYS = {
+  progress: "gestureGuideProgress",
+  favorites: "gestureGuideFavorites",
+  lastViewed: "gestureGuideLastViewed"
+};
+
+const storage = {
+  available: true,
+  read(key, fallback) {
+    if (!this.available) return fallback;
+    try {
+      const raw = window.localStorage.getItem(key);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed === null || parsed === undefined ? fallback : parsed;
+    } catch (err) { this.available = false; return fallback; }
+  },
+  write(key, value) {
+    if (!this.available) return false;
+    try { window.localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (err) { this.available = false; return false; }
+  }
+};
+
+/* ============================================================
+   6. STATE
+   ============================================================ */
+const state = {
+  gestures: [],
+  selectedCategory: "Semua",
+  searchQuery: "",
+  sortOption: "default",
+  difficulty: "all",
+  favoritesOnly: false,
+  selectedGesture: null,
+  favorites: [],
+  recentlyViewed: [],
+  learned: [],
+  practiceIndex: 0,
+  practiceStep: 0,
+  lastFocusedElement: null
+};
+
+/* ============================================================
+   7. FORMATTERS & HELPERS
+   ============================================================ */
+const DIFFICULTY_LABELS = { beginner:"Pemula", intermediate:"Menengah", advanced:"Lanjutan" };
+const DIFFICULTY_ORDER = { beginner:1, intermediate:2, advanced:3 };
+
+function escapeHtml(value) {
+  return String(value === null || value === undefined ? "" : value)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function safeText(value, fallback) {
+  const text = String(value === null || value === undefined ? "" : value).trim();
+  if (!text || text === "undefined" || text === "null" || text === "NaN") return fallback || "Informasi belum tersedia.";
+  return text;
+}
+function difficultyLabel(level) { return DIFFICULTY_LABELS[level] || "Pemula"; }
+
+function normalizeGesture(raw, index) {
+  const g = raw || {};
+  const id = safeText(g.id, "gs-auto-" + index);
+  return {
+    id, name:safeText(g.name,"Gestur Tanpa Nama"), slug:safeText(g.slug,id),
+    category:safeText(g.category,"Lainnya"),
+    meaning:safeText(g.meaning,"Makna belum tersedia."),
+    description:safeText(g.description,"Deskripsi belum tersedia."),
+    pose: g.pose && typeof g.pose === "object" ? g.pose : {f1:1,f2:1,f3:1,f4:1,t:1,rot:0},
+    steps: Array.isArray(g.steps) && g.steps.length
+      ? g.steps.map(function(s,i){ return {
+          number:Number(s && s.number) || i+1,
+          title:safeText(s && s.title, "Langkah " + (i+1)),
+          description:safeText(s && s.description, "Deskripsi langkah belum tersedia."),
+          pose: s && s.pose && typeof s.pose === "object" ? s.pose : null
+        };})
+      : [{number:1,title:"Panduan Belum Tersedia",description:"Langkah gerakan untuk gestur ini belum tersedia.",pose:null}],
+    usage:safeText(g.usage,"Contoh penggunaan belum tersedia."),
+    notes:safeText(g.notes,"Catatan konteks belum tersedia."),
+    keywords:Array.isArray(g.keywords) ? g.keywords : [],
+    difficulty:DIFFICULTY_ORDER[g.difficulty] ? g.difficulty : "beginner",
+    featured: g.featured === true,
+    status: safeText(g.status,"dummy")
+  };
+}
+
+function clamp01(v) {
+  const n = Number(v);
+  if (isNaN(n)) return 0;
+  if (n < 0) return 0;
+  if (n > 1) return 1;
+  return n;
+}
+
+/* ============================================================
+   8. HAND ILLUSTRATION SVG
+   ============================================================ */
+function handSVG(pose, label, extraClass) {
+  const p = pose && typeof pose === "object" ? pose : {};
+  const f1 = clamp01(p.f1 !== undefined ? p.f1 : 1);
+  const f2 = clamp01(p.f2 !== undefined ? p.f2 : 1);
+  const f3 = clamp01(p.f3 !== undefined ? p.f3 : 1);
+  const f4 = clamp01(p.f4 !== undefined ? p.f4 : 1);
+  const th = clamp01(p.t !== undefined ? p.t : 1);
+  const rot = Number(p.rot) || 0;
+
+  const fingerDefs = [
+    { v:f1, x:66, len:74 }, { v:f2, x:89, len:86 },
+    { v:f3, x:112, len:80 }, { v:f4, x:135, len:58 }
+  ];
+
+  const BASE = 122;
+  let fingerMarkup = "";
+  fingerDefs.forEach(function(f){
+    const len = 14 + (f.len - 14) * f.v;
+    const y = BASE - len;
+    const h = len + 34;
+    fingerMarkup += '<rect x="'+f.x+'" y="'+y.toFixed(1)+'" width="20" height="'+h.toFixed(1)+'" rx="10" fill="#E8D8C8" stroke="#5A3A2A" stroke-width="3" stroke-linejoin="round"/>';
+  });
+
+  const thumbAngle = (-34 * th + 16 * (1 - th)).toFixed(1);
+  const labelText = escapeHtml(label || "Ilustrasi gestur tangan");
+
+  return '<svg viewBox="0 0 200 275" role="img" aria-label="'+labelText+'" xmlns="http://www.w3.org/2000/svg" class="'+escapeHtml(extraClass||"")+'" preserveAspectRatio="xMidYMid meet">'+
+    '<g transform="rotate('+rot+' 100 160)">'+
+      '<rect x="82" y="192" width="56" height="52" rx="18" fill="#E8D8C8" stroke="#5A3A2A" stroke-width="3"/>'+
+      fingerMarkup +
+      '<rect x="62" y="112" width="96" height="98" rx="26" fill="#E8D8C8" stroke="#5A3A2A" stroke-width="3"/>'+
+      '<rect x="42" y="132" width="22" height="78" rx="11" fill="#E8D8C8" stroke="#5A3A2A" stroke-width="3" transform="rotate('+thumbAngle+' 64 156)"/>'+
+    '</g></svg>';
+}
+
+function visualPlaceholder(message) {
+  return '<div style="display:grid;place-items:center;width:100%;height:100%;min-height:120px;border:1px dashed #C9A27E;border-radius:12px;color:#7A5238;font-size:.8rem;text-align:center;padding:16px;background:#FBF8F4;">'+escapeHtml(message||"Visual Tidak Tersedia")+'</div>';
+}
+
+/* ============================================================
+   9. GESTURE RENDERING
+   ============================================================ */
+const gestureGridEl = document.getElementById("gestureGrid");
+const gestureEmptyEl = document.getElementById("gestureEmpty");
+const featuredGridEl = document.getElementById("featuredGrid");
+const resultMetaEl = document.getElementById("resultMeta");
+const categoryPillsEl = document.getElementById("categoryPills");
+
+function renderCategoryPills() {
+  const counts = {};
+  state.gestures.forEach(function(g){ counts[g.category] = (counts[g.category]||0) + 1; });
+  let html = "";
+  CATEGORIES.forEach(function(cat){
+    const isActive = state.selectedCategory === cat;
+    const count = cat === "Semua" ? state.gestures.length : (counts[cat] || 0);
+    html += '<button type="button" class="pill" data-category="'+escapeHtml(cat)+'" aria-pressed="'+(isActive?"true":"false")+'">'+
+      escapeHtml(cat)+' <span aria-hidden="true" style="opacity:.62;">('+count+')</span>'+
+      '<span class="sr-only">, '+count+' gestur</span></button>';
+  });
+  categoryPillsEl.innerHTML = html;
+}
+
+function gestureCardHTML(gesture, options) {
+  const opts = options || {};
+  const isFav = state.favorites.indexOf(gesture.id) !== -1;
+  const visual = handSVG(gesture.pose, "Ilustrasi gestur " + gesture.name);
+  return '<article class="gesture-card">'+
+    '<button type="button" class="fav-btn" data-action="toggle-favorite" data-id="'+escapeHtml(gesture.id)+'" aria-pressed="'+(isFav?"true":"false")+'" aria-label="'+(isFav?"Hapus ":"Simpan ")+escapeHtml(gesture.name)+(isFav?" dari favorit":" ke favorit")+'">'+(isFav?"♥":"♡")+'</button>'+
+    '<div class="gesture-visual">'+visual+'</div>'+
+    '<div class="gesture-body">'+
+      '<span class="badge">'+escapeHtml(gesture.category)+'</span>'+
+      '<h3>'+escapeHtml(gesture.name)+'</h3>'+
+      '<p class="meaning">'+escapeHtml(gesture.meaning)+'</p>'+
+      '<div class="card-foot">'+
+        '<span class="badge badge-diff" data-level="'+escapeHtml(gesture.difficulty)+'">'+escapeHtml(difficultyLabel(gesture.difficulty))+'</span>'+
+        '<button type="button" class="btn btn-primary btn-sm" data-action="open-gesture" data-id="'+escapeHtml(gesture.id)+'" aria-label="Pelajari gestur '+escapeHtml(gesture.name)+'">'+(opts.ctaLabel||"Pelajari")+'</button>'+
+      '</div>'+
+    '</div></article>';
+}
+
+function getVisibleGestures() {
+  let list = state.gestures.slice();
+  if (state.favoritesOnly) list = list.filter(function(g){ return state.favorites.indexOf(g.id) !== -1; });
+  if (state.selectedCategory !== "Semua") list = list.filter(function(g){ return g.category === state.selectedCategory; });
+  if (state.difficulty !== "all") list = list.filter(function(g){ return g.difficulty === state.difficulty; });
+  const query = state.searchQuery.trim().toLowerCase();
+  if (query) {
+    list = list.filter(function(g){
+      const haystack = [g.name,g.meaning,g.category,g.description,g.usage,(g.keywords||[]).join(" ")].join(" ").toLowerCase();
+      return haystack.indexOf(query) !== -1;
+    });
+  }
+  list.sort(function(a,b){
+    switch (state.sortOption) {
+      case "az": return a.name.localeCompare(b.name,"id");
+      case "za": return b.name.localeCompare(a.name,"id");
+      case "beginner": return DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty] || a.name.localeCompare(b.name,"id");
+      case "intermediate": return (Math.abs(DIFFICULTY_ORDER[a.difficulty]-2)-Math.abs(DIFFICULTY_ORDER[b.difficulty]-2)) || a.name.localeCompare(b.name,"id");
+      case "advanced": return DIFFICULTY_ORDER[b.difficulty] - DIFFICULTY_ORDER[a.difficulty] || a.name.localeCompare(b.name,"id");
+      default: return 0;
+    }
+  });
+  return list;
+}
+
+function renderGestures() {
+  const list = getVisibleGestures();
+  if (!state.gestures.length) {
+    gestureGridEl.innerHTML = "";
+    gestureEmptyEl.innerHTML = '<div class="empty"><h3>Belum Ada Materi</h3><p>Materi gestur belum tersedia saat ini.</p></div>';
+    resultMetaEl.textContent = "";
+    return;
+  }
+  if (!list.length) {
+    gestureGridEl.innerHTML = "";
+    gestureEmptyEl.innerHTML = '<div class="empty"><h3>Gestur Tidak Ditemukan</h3><p>Coba gunakan kata kunci lain atau pilih kategori yang berbeda.</p></div>';
+    resultMetaEl.textContent = "Tidak ada materi yang cocok dengan filter saat ini.";
+    return;
+  }
+  gestureEmptyEl.innerHTML = "";
+  gestureGridEl.innerHTML = list.map(function(g){ return gestureCardHTML(g); }).join("");
+  resultMetaEl.textContent = "Menampilkan " + list.length + " dari " + state.gestures.length + " materi gestur.";
+}
+
+function renderFeatured() {
+  const featured = state.gestures.filter(function(g){ return g.featured === true; });
+  if (!featured.length) {
+    featuredGridEl.innerHTML = '<div class="empty"><h3>Belum Ada Materi</h3><p>Belum ada gestur pilihan yang ditandai saat ini.</p></div>';
+    return;
+  }
+  featuredGridEl.innerHTML = featured.slice(0,3).map(function(g){ return gestureCardHTML(g); }).join("");
+}
+
+/* ============================================================
+   10. MODAL
+   ============================================================ */
+const modalEl = document.getElementById("gestureModal");
+const modalContentEl = document.getElementById("modalContent");
+const modalCloseBtn = document.getElementById("modalClose");
+const modalPanelEl = document.getElementById("modalPanel");
+
+function renderModalContent(gesture) {
+  const isFav = state.favorites.indexOf(gesture.id) !== -1;
+  const stepsHTML = gesture.steps.map(function(step){
+    const stepVisual = step.pose
+      ? '<div class="gesture-visual" style="max-width:150px;aspect-ratio:1/1;">'+handSVG(step.pose, "Ilustrasi langkah "+step.number+" gestur "+gesture.name)+'</div>'
+      : '<div class="gesture-visual" style="max-width:150px;">'+visualPlaceholder("Visual Tidak Tersedia")+'</div>';
+    return '<div class="step"><span class="step-num" aria-hidden="true">'+String(step.number).padStart(2,"0")+'</span>'+
+      '<div><h4>'+escapeHtml(step.title)+'</h4><p>'+escapeHtml(step.description)+'</p><div style="margin-top:12px;">'+stepVisual+'</div></div></div>';
+  }).join("");
+
+  return '<div class="modal-head">'+
+    '<div class="modal-meta">'+
+      '<span class="badge">'+escapeHtml(gesture.category)+'</span>'+
+      '<span class="badge badge-diff" data-level="'+escapeHtml(gesture.difficulty)+'">'+escapeHtml(difficultyLabel(gesture.difficulty))+'</span>'+
+    '</div>'+
+    '<h2 id="modalTitle">'+escapeHtml(gesture.name)+'</h2>'+
+    '<p class="modal-meaning"><strong>Makna:</strong> '+escapeHtml(gesture.meaning)+'</p>'+
+  '</div>'+
+  '<div class="modal-layout">'+
+    '<figure class="modal-visual" style="margin:0;">'+handSVG(gesture.pose, "Ilustrasi utama gestur "+gesture.name)+
+      '<figcaption>Ilustrasi panduan visual. Bentuk gestur dapat berbeda pada setiap komunitas bahasa isyarat.</figcaption></figure>'+
+    '<div><h3 class="block-title">Cara Melakukan Gestur</h3><div class="steps">'+stepsHTML+'</div></div>'+
+  '</div>'+
+  '<div class="modal-block"><h3 class="block-title">Deskripsi</h3><p>'+escapeHtml(gesture.description)+'</p></div>'+
+  '<div class="modal-block"><h3 class="block-title">Contoh Penggunaan</h3><p>'+escapeHtml(gesture.usage)+'</p></div>'+
+  '<div class="modal-block"><h3 class="block-title">Catatan Konteks</h3><p>'+escapeHtml(gesture.notes)+'</p></div>'+
+  '<p class="note note-tight">Bahasa isyarat memiliki variasi berdasarkan negara dan komunitas. Gunakan materi ini sebagai panduan belajar dan sesuaikan dengan bahasa isyarat yang digunakan di lingkunganmu.</p>'+
+  '<div class="modal-actions" style="margin-top:28px;">'+
+    '<button type="button" class="btn btn-primary" data-action="toggle-favorite" data-id="'+escapeHtml(gesture.id)+'" aria-pressed="'+(isFav?"true":"false")+'">'+(isFav?"♥ Tersimpan":"♡ Simpan")+'</button>'+
+    '<button type="button" class="btn btn-secondary" data-action="practice-this" data-id="'+escapeHtml(gesture.id)+'">Latih Gestur Ini</button>'+
+    '<button type="button" class="btn btn-secondary" data-action="close-modal">Tutup</button>'+
+  '</div>';
+}
+
+function openGesture(id) {
+  const gesture = state.gestures.find(function(g){ return g.id === id; });
+  if (!gesture) { showToast("Materi Tidak Tersedia"); return; }
+  state.selectedGesture = gesture;
+  state.lastFocusedElement = document.activeElement;
+  modalContentEl.innerHTML = renderModalContent(gesture);
+  modalEl.classList.add("open");
+  modalEl.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  modalCloseBtn.focus();
+  addRecentlyViewed(gesture.id);
+  addLearned(gesture.id);
+}
+
+function closeModal() {
+  if (!modalEl.classList.contains("open")) return;
+  modalEl.classList.remove("open");
+  modalEl.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+  state.selectedGesture = null;
+  if (state.lastFocusedElement && typeof state.lastFocusedElement.focus === "function") state.lastFocusedElement.focus();
+}
+
+/* ============================================================
+   11. SEARCH / SORT / FILTER
+   ============================================================ */
+const searchInputEl = document.getElementById("searchInput");
+const sortSelectEl = document.getElementById("sortSelect");
+const difficultySelectEl = document.getElementById("difficultySelect");
+const favoriteToggleEl = document.getElementById("favoriteToggle");
+const resetFilterBtn = document.getElementById("resetFilterBtn");
+
+function handleSearchInput(e){ state.searchQuery = e.target.value || ""; renderGestures(); }
+function handleSortChange(e){ state.sortOption = e.target.value; renderGestures(); }
+function handleDifficultyChange(e){ state.difficulty = e.target.value; renderGestures(); }
+function handleCategoryClick(e){
+  const btn = e.target.closest("[data-category]");
+  if (!btn) return;
+  state.selectedCategory = btn.getAttribute("data-category");
+  renderCategoryPills(); renderGestures();
+}
+function handleFavoriteToggle(){
+  state.favoritesOnly = !state.favoritesOnly;
+  favoriteToggleEl.setAttribute("aria-pressed", state.favoritesOnly ? "true" : "false");
+  renderGestures();
+}
+function handleResetFilters(){
+  state.selectedCategory = "Semua"; state.searchQuery = "";
+  state.sortOption = "default"; state.difficulty = "all"; state.favoritesOnly = false;
+  searchInputEl.value = ""; sortSelectEl.value = "default";
+  difficultySelectEl.value = "all"; favoriteToggleEl.setAttribute("aria-pressed","false");
+  renderCategoryPills(); renderGestures(); showToast("Filter direset.");
+}
+
+/* ============================================================
+   12. FAVORITES
+   ============================================================ */
+function loadFavorites() {
+  const stored = storage.read(STORAGE_KEYS.favorites, []);
+  state.favorites = Array.isArray(stored) ? stored.filter(function(v){ return typeof v === "string"; }) : [];
+}
+function saveFavorites() { storage.write(STORAGE_KEYS.favorites, state.favorites); }
+
+function toggleFavorite(id) {
+  const index = state.favorites.indexOf(id);
+  if (index === -1) { state.favorites.push(id); showToast("Gestur disimpan."); }
+  else { state.favorites.splice(index, 1); showToast("Gestur dihapus dari favorit."); }
+  saveFavorites();
+  updateFavoriteButtons(id);
+  renderGestures(); renderFeatured();
+  if (state.selectedGesture && state.selectedGesture.id === id) {
+    modalContentEl.innerHTML = renderModalContent(state.selectedGesture);
+  }
+}
+function updateFavoriteButtons(id) {
+  const isFav = state.favorites.indexOf(id) !== -1;
+  const buttons = document.querySelectorAll('[data-action="toggle-favorite"][data-id="'+id+'"]');
+  Array.prototype.forEach.call(buttons, function(btn){
+    btn.setAttribute("aria-pressed", isFav ? "true" : "false");
+    if (btn.classList.contains("fav-btn")) {
+      btn.textContent = isFav ? "♥" : "♡";
+      btn.setAttribute("aria-label", (isFav ? "Hapus " : "Simpan ") + (isFav ? "dari" : "ke") + " favorit");
+    } else {
+      btn.textContent = isFav ? "♥ Tersimpan" : "♡ Simpan";
+    }
+  });
+}
+
+/* ============================================================
+   13. PROGRESS & RECENT
+   ============================================================ */
+const recentContainerEl = document.getElementById("recentContainer");
+const progressCountEl = document.getElementById("progressCount");
+const progressFillEl = document.getElementById("progressFill");
+const progressBarEl = document.getElementById("progressBar");
+
+function loadProgress() {
+  const fav = storage.read(STORAGE_KEYS.favorites, null);
+  if (fav !== null) loadFavorites();
+  const recent = storage.read(STORAGE_KEYS.lastViewed, []);
+  state.recentlyViewed = Array.isArray(recent) ? recent.filter(function(v){ return typeof v === "string"; }) : [];
+  const prog = storage.read(STORAGE_KEYS.progress, []);
+  state.learned = Array.isArray(prog) ? prog.filter(function(v){ return typeof v === "string"; }) : [];
+}
+function addRecentlyViewed(id) {
+  state.recentlyViewed = state.recentlyViewed.filter(function(v){ return v !== id; });
+  state.recentlyViewed.unshift(id);
+  state.recentlyViewed = state.recentlyViewed.slice(0,6);
+  storage.write(STORAGE_KEYS.lastViewed, state.recentlyViewed);
+  renderRecentlyViewed();
+}
+function addLearned(id) {
+  if (state.learned.indexOf(id) === -1) {
+    state.learned.push(id);
+    storage.write(STORAGE_KEYS.progress, state.learned);
+    renderProgress();
+  }
+}
+function renderRecentlyViewed() {
+  const items = state.recentlyViewed.map(function(id){ return state.gestures.find(function(g){ return g.id === id; }); }).filter(Boolean);
+  if (!items.length) {
+    recentContainerEl.innerHTML = '<div class="empty" style="padding:26px 20px;"><h3>Belum Ada Materi</h3><p>Mulai pelajari gestur dan materi yang terakhir kamu buka akan muncul di sini.</p></div>';
+    return;
+  }
+  recentContainerEl.innerHTML = '<div class="recent-list">'+items.map(function(g){
+    return '<button type="button" class="recent-item" data-action="open-gesture" data-id="'+escapeHtml(g.id)+'" aria-label="Buka materi '+escapeHtml(g.name)+'">'+
+      '<span class="recent-thumb" aria-hidden="true">'+handSVG(g.pose, "Ilustrasi gestur "+g.name)+'</span>'+
+      '<span><span class="recent-name">'+escapeHtml(g.name)+'</span><br><span class="recent-cat">'+escapeHtml(g.category)+" · "+escapeHtml(difficultyLabel(g.difficulty))+'</span></span></button>';
+  }).join("")+'</div>';
+}
+function renderProgress() {
+  const total = state.gestures.length;
+  const done = state.learned.filter(function(id){ return state.gestures.some(function(g){ return g.id === id; }); }).length;
+  const percent = total ? Math.round((done/total)*100) : 0;
+  progressCountEl.textContent = done + " dari " + total;
+  progressFillEl.style.width = percent + "%";
+  progressBarEl.setAttribute("aria-valuenow", String(percent));
+}
+
+/* ============================================================
+   14. PRACTICE MODE
+   ============================================================ */
+const practiceVisualEl = document.getElementById("practiceVisual");
+const practiceNameEl = document.getElementById("practiceName");
+const practiceDescEl = document.getElementById("practiceDesc");
+const practiceStepLabelEl = document.getElementById("practiceStepLabel");
+const practiceTrackEl = document.getElementById("practiceTrack");
+const practiceRepeatBtn = document.getElementById("practiceRepeat");
+const practiceNextStepBtn = document.getElementById("practiceNextStep");
+const practiceNextGestureBtn = document.getElementById("practiceNextGesture");
+
+function getPracticeList() { return state.gestures.slice().sort(function(a,b){ return a.name.localeCompare(b.name,"id"); }); }
+function renderPractice() {
+  const list = getPracticeList();
+  if (!list.length) {
+    practiceVisualEl.innerHTML = visualPlaceholder("Visual Tidak Tersedia");
+    practiceNameEl.textContent = "Belum Ada Materi";
+    practiceDescEl.textContent = "Materi gestur belum tersedia saat ini.";
+    practiceStepLabelEl.textContent = "Langkah 00";
+    practiceTrackEl.innerHTML = "";
+    return;
+  }
+  if (state.practiceIndex >= list.length) state.practiceIndex = 0;
+  if (state.practiceIndex < 0) state.practiceIndex = list.length - 1;
+  const gesture = list[state.practiceIndex];
+  const steps = gesture.steps;
+  if (state.practiceStep >= steps.length) state.practiceStep = 0;
+  if (state.practiceStep < 0) state.practiceStep = steps.length - 1;
+  const step = steps[state.practiceStep];
+  practiceVisualEl.innerHTML = handSVG(step.pose || gesture.pose, "Ilustrasi langkah "+step.number+" gestur "+gesture.name);
+  practiceNameEl.textContent = gesture.name;
+  practiceDescEl.textContent = step.description;
+  practiceStepLabelEl.textContent = "Langkah " + String(step.number).padStart(2,"0") + " — " + step.title;
+  practiceTrackEl.innerHTML = steps.map(function(s,i){ return '<span class="step-dot'+(i===state.practiceStep?" active":"")+'"></span>'; }).join("");
+}
+function practiceNextStep() {
+  const list = getPracticeList(); if (!list.length) return;
+  const gesture = list[state.practiceIndex];
+  state.practiceStep = (state.practiceStep + 1) % gesture.steps.length;
+  renderPractice();
+}
+function practiceNextGesture() {
+  const list = getPracticeList(); if (!list.length) return;
+  state.practiceIndex = (state.practiceIndex + 1) % list.length;
+  state.practiceStep = 0;
+  renderPractice();
+  showToast("Materi berhasil dibuka.");
+}
+function practiceRepeat() { state.practiceStep = 0; renderPractice(); }
+function practiceGestureById(id) {
+  const list = getPracticeList();
+  const index = list.findIndex(function(g){ return g.id === id; });
+  if (index === -1) return;
+  state.practiceIndex = index; state.practiceStep = 0;
+  renderPractice(); closeModal();
+  const target = document.getElementById("latihan");
+  if (target) target.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ============================================================
+   15. TOAST
+   ============================================================ */
+const toastEl = document.getElementById("toast");
+let toastTimer = null;
+function showToast(message) {
+  toastEl.textContent = message;
+  toastEl.classList.add("show");
+  if (toastTimer) window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(function(){ toastEl.classList.remove("show"); }, 2600);
+}
+
+/* ============================================================
+   16. MOBILE MENU
+   ============================================================ */
+const menuToggleEl = document.getElementById("menuToggle");
+const mobileMenuEl = document.getElementById("mobileMenu");
+function toggleMobileMenu() {
+  const isOpen = mobileMenuEl.classList.toggle("open");
+  menuToggleEl.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+function closeMobileMenu() {
+  mobileMenuEl.classList.remove("open");
+  menuToggleEl.setAttribute("aria-expanded","false");
+}
+function focusSearch() {
+  closeMobileMenu();
+  const target = document.getElementById("gestur");
+  if (target) target.scrollIntoView({behavior:"smooth",block:"start"});
+  window.setTimeout(function(){ searchInputEl.focus(); }, 380);
+}
+
+/* ============================================================
+   17. STATIC CONTENT
+   ============================================================ */
+function renderSiteConfig() {
+  document.getElementById("brandName").textContent = siteConfig.brandName;
+  document.getElementById("footerBrandName").textContent = siteConfig.brandName;
+  document.getElementById("footerTagline").textContent = siteConfig.tagline;
+  document.getElementById("footerText").textContent = siteConfig.footerText;
+  document.getElementById("footerCopyright").textContent = "© 2026 " + siteConfig.brandName;
+  document.getElementById("heroVisual").innerHTML = handSVG({f1:1,f2:1,f3:1,f4:1,t:1,rot:-6}, "Ilustrasi telapak tangan terbuka sebagai contoh panduan visual") +
+    '<p class="hero-visual-caption">Contoh ilustrasi panduan visual. Bentuk gestur dapat berbeda pada setiap komunitas bahasa isyarat.</p>';
+}
+function renderSignSystem() {
+  document.getElementById("signSystemList").innerHTML =
+    '<div class="info-row"><span class="info-label">Sistem / Referensi</span><span class="info-value">'+escapeHtml(siteConfig.languageSystem)+'</span></div>'+
+    '<div class="info-row"><span class="info-label">Status Materi</span><span class="info-value">Data contoh (dummy) untuk keperluan demonstrasi. Belum divalidasi oleh komunitas atau pengajar bahasa isyarat.</span></div>'+
+    '<div class="info-row"><span class="info-label">Catatan</span><span class="info-value">Pastikan materi sesuai dengan bahasa isyarat yang digunakan oleh komunitas setempat.</span></div>';
+}
+function renderSourceList() {
+  document.getElementById("sourceList").innerHTML =
+    '<div class="info-row"><span class="info-label">Sumber Materi</span><span class="info-value">'+escapeHtml(siteConfig.sourceNote)+'</span></div>'+
+    '<div class="info-row"><span class="info-label">Organisasi / Komunitas</span><span class="info-value muted">Belum ditentukan. Pengelola dapat menambahkan nama organisasi atau komunitas resmi pada konfigurasi website.</span></div>'+
+    '<div class="info-row"><span class="info-label">Bahasa Isyarat</span><span class="info-value muted">Belum ditentukan. Isi bagian ini jika materi sudah mengacu pada sistem bahasa isyarat tertentu.</span></div>'+
+    '<div class="info-row"><span class="info-label">Tautan Referensi</span><span class="info-value muted">Belum tersedia. Tautan akan ditampilkan setelah sumber resmi ditambahkan.</span></div>';
+}
+function renderContactList() {
+  const contact = siteConfig.contact || {};
+  function row(label, value, fallback) {
+    const safe = String(value || "").trim();
+    return '<div class="info-row"><span class="info-label">'+escapeHtml(label)+'</span><span class="info-value'+(safe?"":" muted")+'">'+escapeHtml(safe||fallback)+'</span></div>';
+  }
+  document.getElementById("contactList").innerHTML =
+    row("Email", contact.email, "Belum tersedia. Pengelola dapat mengisinya melalui konfigurasi website.") +
+    row("Komunitas", contact.community, "Belum tersedia. Isi dengan komunitas bahasa isyarat resmi bila sudah ada.") +
+    row("Referensi", contact.reference, "Belum tersedia. Isi dengan tautan sumber resmi bila sudah ada.") +
+    row("Catatan", "", "Website ini tidak menampilkan kontak atau sumber yang belum terverifikasi.");
+}
+
+/* ============================================================
+   18. CAMERA + GESTURE DETECTION
+   ============================================================ */
+const cameraVideo = document.getElementById("cameraVideo");
+const cameraCanvas = document.getElementById("cameraCanvas");
+const cameraPlaceholder = document.getElementById("cameraPlaceholder");
+const startCameraBtn = document.getElementById("startCameraBtn");
+const stopCameraBtn = document.getElementById("stopCameraBtn");
+const soundToggle = document.getElementById("soundToggle");
+const cameraStatusText = document.getElementById("cameraStatusText");
+const detectedNameEl = document.getElementById("detectedName");
+const matchScoreEl = document.getElementById("matchScore");
+const matchFillEl = document.getElementById("matchFill");
+const cameraErrorEl = document.getElementById("cameraError");
+
+let handsInstance = null;
+let cameraInstance = null;
+let audioCtx = null;
+let soundEnabled = true;
+let cameraRunning = false;
+let lastDetectedId = null;
+let stableFrames = 0;
+const STABLE_THRESHOLD = 6;
+let lastSpokenAt = 0;
+const SPEAK_COOLDOWN = 1500;
+
+function initAudio() {
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (err) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+}
+
+function playSuccessTone(frequency) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(frequency, now);
+  osc.frequency.exponentialRampToValueAtTime(frequency * 1.5, now + 0.12);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(now); osc.stop(now + 0.45);
+}
+
+function setCameraError(message) {
+  if (!message) { cameraErrorEl.hidden = true; cameraErrorEl.textContent = ""; return; }
+  cameraErrorEl.hidden = false;
+  cameraErrorEl.textContent = message;
+}
+
+function updateStatus(text) { cameraStatusText.textContent = text; }
+
+function getFingerStates(landmarks) {
+  const wrist = landmarks[0];
+  const dist = function(p){ return Math.hypot(p.x - wrist.x, p.y - wrist.y); };
+  const fingerData = [
+    { tip:4, pip:3, mcp:2 },
+    { tip:8, pip:6, mcp:5 },
+    { tip:12, pip:10, mcp:9 },
+    { tip:16, pip:14, mcp:13 },
+    { tip:20, pip:18, mcp:17 }
+  ];
+  const palmCenter = {
+    x: (landmarks[0].x + landmarks[5].x + landmarks[17].x) / 3,
+    y: (landmarks[0].y + landmarks[5].y + landmarks[17].y) / 3
+  };
+  return fingerData.map(function(f, i){
+    const tip = landmarks[f.tip];
+    const pip = landmarks[f.pip];
+    const mcp = landmarks[f.mcp];
+    if (i === 0) {
+      const tipDist = Math.hypot(tip.x - palmCenter.x, tip.y - palmCenter.y);
+      const mcpDist = Math.hypot(mcp.x - palmCenter.x, mcp.y - palmCenter.y);
+      return tipDist > mcpDist * 1.35 ? 1 : 0;
+    }
+    const tipDist = dist(tip);
+    const pipDist = dist(pip);
+    return tipDist > pipDist * 1.12 ? 1 : 0;
+  });
+}
+
+function detectGesture(fingerStates) {
+  let bestId = null;
+  let bestScore = 0;
+  let bestPriority = 999;
+  for (const id in GESTURE_DETECTION) {
+    if (!Object.prototype.hasOwnProperty.call(GESTURE_DETECTION, id)) continue;
+    const pattern = GESTURE_DETECTION[id];
+    let matches = 0;
+    for (let i = 0; i < 5; i++) {
+      if (fingerStates[i] === pattern.fingers[i]) matches++;
+    }
+    const score = matches / 5;
+    if (score > bestScore || (score === bestScore && pattern.priority < bestPriority)) {
+      bestScore = score; bestId = id; bestPriority = pattern.priority;
+    }
+  }
+  return { id: bestId, score: bestScore };
+}
+
+function drawHandLandmarks(landmarks) {
+  const ctx = cameraCanvas.getContext("2d");
+  ctx.clearRect(0, 0, cameraCanvas.width, cameraCanvas.height);
+  if (!landmarks || !landmarks.length) return;
+  if (typeof drawConnectors === "function" && typeof HAND_CONNECTIONS !== "undefined") {
+    drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: "#C9A27E", lineWidth: 3 });
+  } else if (typeof window.drawConnectors === "function") {
+    try { window.drawConnectors(ctx, landmarks, window.HAND_CONNECTIONS, { color: "#C9A27E", lineWidth: 3 }); } catch (e) {}
+  }
+  if (typeof drawLandmarks === "function") {
+    drawLandmarks(ctx, landmarks, { color: "#F5EFE8", lineWidth: 1, radius: 4 });
+  }
+}
+
+function onHandResults(results) {
+  const ctx = cameraCanvas.getContext("2d");
+  ctx.clearRect(0, 0, cameraCanvas.width, cameraCanvas.height);
+
+  let gestureId = null;
+  let score = 0;
+  let fingerStates = null;
+
+  if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+    const landmarks = results.multiHandLandmarks[0];
+    if (typeof drawConnectors === "function" && typeof HAND_CONNECTIONS !== "undefined") {
+      drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: "#C9A27E", lineWidth: 3 });
+    }
+    if (typeof drawLandmarks === "function") {
+      drawLandmarks(ctx, landmarks, { color: "#F5EFE8", lineWidth: 1, radius: 4 });
+    }
+    fingerStates = getFingerStates(landmarks);
+    const result = detectGesture(fingerStates);
+    if (result.score >= 0.8) { gestureId = result.id; score = result.score; }
+  }
+
+  if (gestureId && gestureId === lastDetectedId) {
+    stableFrames++;
+  } else if (gestureId) {
+    lastDetectedId = gestureId;
+    stableFrames = 1;
+  } else {
+    lastDetectedId = null;
+    stableFrames = 0;
+  }
+
+  if (gestureId && stableFrames === STABLE_THRESHOLD) {
+    const now = Date.now();
+    if (now - lastSpokenAt > SPEAK_COOLDOWN) {
+      const pattern = GESTURE_DETECTION[gestureId];
+      if (pattern) {
+        playSuccessTone(pattern.sound);
+        lastSpokenAt = now;
+      }
+    }
+  }
+
+  if (gestureId && stableFrames >= 2) {
+    const pattern = GESTURE_DETECTION[gestureId];
+    detectedNameEl.textContent = pattern ? pattern.label : "—";
+    const percent = Math.round(score * 100);
+    matchScoreEl.textContent = percent + "%";
+    matchFillEl.style.width = percent + "%";
+  } else if (fingerStates && lastDetectedId) {
+    detectedNameEl.textContent = "Mendeteksi...";
+    matchScoreEl.textContent = Math.round(score * 100) + "%";
+    matchFillEl.style.width = (score * 100) + "%";
+  } else if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+    detectedNameEl.textContent = "Tangan terdeteksi";
+    matchScoreEl.textContent = "—";
+    matchFillEl.style.width = "0%";
+  } else {
+    detectedNameEl.textContent = "—";
+    matchScoreEl.textContent = "—";
+    matchFillEl.style.width = "0%";
+  }
+}
+
+async function startCamera() {
+  setCameraError("");
+  updateStatus("Meminta izin kamera...");
+  startCameraBtn.disabled = true;
+
+  if (typeof Hands === "undefined" || typeof Camera === "undefined") {
+    setCameraError("Pustaka deteksi tangan gagal dimuat. Periksa koneksi internet lalu muat ulang halaman.");
+    updateStatus("Gagal memuat");
+    startCameraBtn.disabled = false;
+    return;
+  }
+
+  try {
+    initAudio();
+
+    handsInstance = new Hands({
+      locateFile: function(file) {
+        return "https://cdn.jsdelivr.net/npm/@mediapipe/hands/" + file;
+      }
+    });
+    handsInstance.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.6
+    });
+    handsInstance.onResults(onHandResults);
+
+    cameraInstance = new Camera(cameraVideo, {
+      onFrame: async function() {
+        if (!cameraRunning) return;
+        try { await handsInstance.send({ image: cameraVideo }); } catch (e) {}
+      },
+      width: 640,
+      height: 480
+    });
+
+    await cameraInstance.start();
+
+    cameraRunning = true;
+    cameraPlaceholder.classList.add("hidden");
+    stopCameraBtn.disabled = false;
+    updateStatus("Aktif — deteksi berjalan");
+    showToast("Kamera aktif. Tunjukkan gestur tanganmu.");
+  } catch (err) {
+    console.error(err);
+    let message = "Tidak dapat mengakses kamera. Pastikan izin kamera diberikan dan situs dijalankan melalui HTTPS atau localhost.";
+    if (err && err.name === "NotAllowedError") message = "Izin kamera ditolak. Aktifkan izin kamera pada browser untuk melanjutkan.";
+    if (err && err.name === "NotFoundError") message = "Kamera tidak ditemukan pada perangkat ini.";
+    setCameraError(message);
+    updateStatus("Gagal");
+    startCameraBtn.disabled = false;
+  }
+}
+
+function stopCamera() {
+  cameraRunning = false;
+  try { if (cameraInstance && typeof cameraInstance.stop === "function") cameraInstance.stop(); } catch (e) {}
+  try { if (handsInstance && typeof handsInstance.close === "function") handsInstance.close(); } catch (e) {}
+  cameraInstance = null;
+  handsInstance = null;
+  cameraPlaceholder.classList.remove("hidden");
+  startCameraBtn.disabled = false;
+  stopCameraBtn.disabled = true;
+  updateStatus("Berhenti");
+  detectedNameEl.textContent = "—";
+  matchScoreEl.textContent = "—";
+  matchFillEl.style.width = "0%";
+  lastDetectedId = null;
+  stableFrames = 0;
+  const ctx = cameraCanvas.getContext("2d");
+  ctx.clearRect(0, 0, cameraCanvas.width, cameraCanvas.height);
+}
+
+/* ============================================================
+   19. EVENT BINDINGS
+   ============================================================ */
+function bindEvents() {
+  menuToggleEl.addEventListener("click", toggleMobileMenu);
+  mobileMenuEl.addEventListener("click", function(e){
+    if (e.target.tagName === "A" || e.target.tagName === "BUTTON") closeMobileMenu();
+  });
+  document.getElementById("navSearchBtn").addEventListener("click", focusSearch);
+  document.getElementById("mobileSearchBtn").addEventListener("click", focusSearch);
+
+  categoryPillsEl.addEventListener("click", handleCategoryClick);
+  searchInputEl.addEventListener("input", handleSearchInput);
+  sortSelectEl.addEventListener("change", handleSortChange);
+  difficultySelectEl.addEventListener("change", handleDifficultyChange);
+  favoriteToggleEl.addEventListener("click", handleFavoriteToggle);
+  resetFilterBtn.addEventListener("click", handleResetFilters);
+
+  document.addEventListener("click", function(event){
+    const actionEl = event.target.closest("[data-action]");
+    if (!actionEl) return;
+    const action = actionEl.getAttribute("data-action");
+    const id = actionEl.getAttribute("data-id");
+    if (action === "open-gesture") openGesture(id);
+    else if (action === "toggle-favorite") { event.preventDefault(); event.stopPropagation(); toggleFavorite(id); }
+    else if (action === "close-modal") closeModal();
+    else if (action === "practice-this") practiceGestureById(id);
+  });
+
+  modalCloseBtn.addEventListener("click", closeModal);
+  modalEl.addEventListener("click", function(e){ if (e.target === modalEl) closeModal(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && modalEl.classList.contains("open")) { closeModal(); return; }
+    if (e.key === "Tab" && modalEl.classList.contains("open")) trapFocus(e);
+  });
+
+  practiceRepeatBtn.addEventListener("click", practiceRepeat);
+  practiceNextStepBtn.addEventListener("click", practiceNextStep);
+  practiceNextGestureBtn.addEventListener("click", practiceNextGesture);
+
+  startCameraBtn.addEventListener("click", startCamera);
+  stopCameraBtn.addEventListener("click", stopCamera);
+  soundToggle.addEventListener("change", function(e){
+    soundEnabled = e.target.checked;
+    if (soundEnabled) initAudio();
+  });
+}
+
+function trapFocus(event) {
+  const focusable = modalPanelEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const list = Array.prototype.filter.call(focusable, function(el){ return el.offsetParent !== null && !el.disabled; });
+  if (!list.length) return;
+  const first = list[0], last = list[list.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+}
+
+/* ============================================================
+   20. INITIALIZATION
+   ============================================================ */
+function init() {
+  state.gestures = GESTURES.map(normalizeGesture);
+  loadProgress();
+  renderSiteConfig();
+  renderSignSystem();
+  renderSourceList();
+  renderContactList();
+  renderCategoryPills();
+  renderGestures();
+  renderFeatured();
+  renderRecentlyViewed();
+  renderProgress();
+  renderPractice();
+  bindEvents();
+
+  if (typeof Hands === "undefined") {
+    setCameraError("Pustaka deteksi tangan tidak dapat dimuat. Fitur kamera memerlukan koneksi internet ke CDN MediaPipe.");
+  }
+  if (!storage.available) showToast("Data lokal tidak dapat dibaca. Materi tetap dapat digunakan.");
+}
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();
+</script>
+</body>
+</html>
